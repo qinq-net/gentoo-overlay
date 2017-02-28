@@ -16,14 +16,14 @@ start() {
     true
   fi
   ebegin "Starting ipSendEmaild"
-  start-stop-daemon -bmS --pidfile ${PIDFILE} --exec ${DAEMON} -- start
+  start-stop-daemon -bmS --pidfile ${PIDFILE} --exec ${DAEMON} -- loop
   eend $?
 }
 
 stop() {
   ebegin "Stopping ipSendEmaild"
   start-stop-daemon --stop --pidfile ${PIDFILE} --exec ${DAEMON}
-  ${DAEMON} stop
+  ${DAEMON} clean
   eend $?
 }
 # vim: set ft=gentoo-init-d et ts=2 sw=2 :

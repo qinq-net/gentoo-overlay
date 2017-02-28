@@ -5,8 +5,8 @@ Description=ipSendEmaild
 [Service]
 Type=simple
 PIDFile=/run/ipSendEmaild.service
-ExecStart=/usr/sbin/ipSendEmaild start
-ExecStop=/usr/bin/ipSendEmaild stop
+ExecStart=/usr/sbin/ipSendEmaild loop
+ExecStop=/usr/sbin/ipSendEmaild clean
 
 [Install]
 WantedBy=multi-user.target

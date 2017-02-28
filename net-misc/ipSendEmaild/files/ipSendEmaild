@@ -1,7 +1,9 @@
 #!/bin/sh
+NAME=ipSendEmaild
+DAEMON=$0
 TIMEOUT=15s
-TMPDIR=/run/ipSendEmaild
-CFGDIR=/etc/ipSendEmaild
+TMPDIR=/run/${NAME}
+CFGDIR=/etc/${NAME}
 FROM=`cat ${CFGDIR}/from`
 FROMUSER=`cat ${CFGDIR}/fromuser`
 if [ -z "${FROMUSER}" ]; then
@@ -11,11 +13,12 @@ PASSWDFILE=$CFGDIR/passwd
 TO=`cat $CFGDIR/to`
 SERVER=`cat $CFGDIR/server`
 OPTIONS="message-file=ip"
+PIDFILE=/run/${NAME}.pid
 do_prepare()
 {
 	true
 }
-do_start()
+do_loop()
 {
 	mkdir -pv ${TMPDIR}
 	do_clean
@@ -57,13 +60,26 @@ do_clean()
 		rm -vf ${TMPDIR}/passwd ${TMPDIR}/ip*
 	fi
 }
+do_start()
+{
+	start-stop-daemon -bmS --pidfile ${PIDFILE} --exec ${DAEMON} -- loop
+}
+do_stop()
+{
+	start-stop-daemon --stop --pidfile ${PIDFILE} --exec ${DAEMON}
+	${DAEMON} clean
+}
 case $1 in
 prepare)
 	do_prepare;;
 start)
 	do_start;;
 stop)
+	do_stop;;
+restart)
+	do_start&&do_stop;;
+clean)
 	do_clean;;
-*)
-	false;;
+loop | *)
+	do_loop;;
 esac
