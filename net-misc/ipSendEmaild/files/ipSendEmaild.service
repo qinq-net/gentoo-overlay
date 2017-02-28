@@ -1,0 +1,12 @@
+[Unit]
+Name=ipSendEmaild
+Description=ipSendEmaild
+
+[Service]
+Type=simple
+PIDFile=/run/ipSendEmaild.service
+ExecStart=/usr/sbin/ipSendEmaild start
+ExecStop=/usr/bin/ipSendEmaild stop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,29 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+NAME=ipSendEmaild
+DAEMON=/usr/sbin/${NAME}
+PIDFILE=/run/${NAME}.pid
+
+depend() {
+  use dns
+}
+
+start() {
+  if [ "${RC_CMD}" = "restart" ]; then
+    true
+  fi
+  ebegin "Starting ipSendEmaild"
+  start-stop-daemon -bmS --pidfile ${PIDFILE} --exec ${DAEMON} -- start
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping ipSendEmaild"
+  start-stop-daemon --stop --pidfile ${PIDFILE} --exec ${DAEMON}
+  ${DAEMON} stop
+  eend $?
+}
+# vim: set ft=gentoo-init-d et ts=2 sw=2 :
