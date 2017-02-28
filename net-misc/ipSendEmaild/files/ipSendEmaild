@@ -1,4 +1,13 @@
 #!/bin/sh
+### BEGIN INIT INFO
+# Provides:          ipSendEmaild
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: ipSendEmaild
+# Description:       Send email on IP change
+### END INIT INFO
 NAME=ipSendEmaild
 DAEMON=$0
 TIMEOUT=15s
@@ -80,6 +89,8 @@ restart)
 	do_start&&do_stop;;
 clean)
 	do_clean;;
-loop | *)
+loop)
 	do_loop;;
+*)
+	false;;
 esac
