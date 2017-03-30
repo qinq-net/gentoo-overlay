@@ -1,0 +1,11 @@
+diff -Naur a/src/tunnel.c b/src/tunnel.c
+--- a/src/tunnel.c	2017-03-30 21:25:44.482020241 +0800
++++ b/src/tunnel.c	2017-03-30 21:25:31.384268017 +0800
+@@ -19,6 +19,7 @@
+ #include <sys/socket.h>
+ #include <arpa/inet.h>
+ #include <netinet/ip.h>
++#define _LINUX_IP_H
+ #include <net/if.h>
+ #include <linux/if_tunnel.h>
+ 
