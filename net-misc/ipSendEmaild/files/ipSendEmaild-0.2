@@ -1,0 +1,110 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          ipSendEmaild
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: ipSendEmaild
+# Description:       Send email on IP change
+### END INIT INFO
+NAME=ipSendEmaild
+DAEMON=$0
+if [ -z "${TMPDIR}" ]; then
+	TMPDIR=/run/${NAME}
+fi
+if [ -z "${CFGDIR}" ]; then
+	CFGDIR=/etc/${NAME}
+fi
+source ${CFGDIR}/ipSendEmaild.conf ||true
+if [ -z "${TIMEOUT}" ]; then
+	TIMEOUT=15s
+fi
+# if [ -z "${FROM}" ]; then
+# 	FROM=`cat ${CFGDIR}/from`
+# fi
+if [ -z "${FROMUSER}" ]; then
+	FROMUSER=$FROM
+fi
+# if [ -z "${PASSWD}" ]; then
+# 	PASSWD=`cat $CFGDIR/passwd`
+# fi
+# if [ -z "${TO}" ]; then
+# 	TO=`cat $CFGDIR/to`
+# fi
+# if [ -z "${SERVER}" ]; then
+# 	SERVER=`cat $CFGDIR/server`
+# fi
+if [ -z "${OPTIONS}" ]; then
+	OPTIONS="message-file=ip"
+fi
+PIDFILE=/run/${NAME}.pid
+do_prepare()
+{
+	true
+}
+do_loop()
+{
+	mkdir -pv ${TMPDIR}
+	do_clean
+	cd "$TMPDIR"
+	while true; do
+		ip addr > ip
+		grep -e inet ip > ip.greped
+		#grep -vwe valid_lft ip > ip.greped
+		diff ip.greped ip.orig.greped
+		if [ $? -ne 0 ]; then
+			echo "==> IPADDR Differs, sending email"
+			timeout "$TIMEOUT" sendEmail \
+				-f "${FROM}" \
+				-t "${TO}" \
+				-u "IPADDR:`hostname`" \
+				-o "${OPTIONS}" -v \
+				-s "${SERVER}" \
+				-xu "${FROMUSER}" \
+				-xp "${PASSWD}"
+			export flag=$?
+			if [ $flag -eq 0 ]; then
+				echo "==> EMAIL SUCCESSFULLY SENT."
+				cp ip ip.orig
+				cp ip.greped ip.orig.greped
+				sleep 60
+			else	echo "==> SENDING UNSUCCESSFUL"
+				sleep 30
+			fi
+		else 	echo "==> IPADDR unchanged, sleeping"
+			sleep 30
+		fi
+	done
+}
+do_clean()
+{
+	if [ ! -z "${TMPDIR}" ]; then
+		rm -vf ${TMPDIR}/passwd ${TMPDIR}/ip*
+	fi
+}
+do_start()
+{
+	start-stop-daemon -bmS --pidfile ${PIDFILE} --exec ${DAEMON} -- loop
+}
+do_stop()
+{
+	start-stop-daemon --stop --pidfile ${PIDFILE} --exec ${DAEMON}
+	${DAEMON} clean
+}
+case $1 in
+prepare)
+	do_prepare;;
+start)
+	do_start;;
+stop)
+	do_stop;;
+restart)
+	do_start&&do_stop;;
+clean)
+	do_clean;;
+loop)
+	do_loop;;
+*)
+	false;;
+esac

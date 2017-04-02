@@ -37,7 +37,8 @@ do_loop()
 	#grep -vwe valid_lft ip.orig > ip.orig.greped
 	while true; do
 		ip addr > ip
-		grep -vwe valid_lft ip > ip.greped
+		grep -e inet ip > ip.greped
+		#grep -vwe valid_lft ip > ip.greped
 		diff ip.greped ip.orig.greped
 		if [ $? -ne 0 ]; then
 			echo "==> IPADDR Differs, sending email"
