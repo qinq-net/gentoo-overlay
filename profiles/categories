@@ -1,7 +1,8 @@
-net-misc
-sys-kernel
-dev-lang
 app-i18n
 app-emulation
+dev-lang
+media-fonts
 media-libs
+net-misc
 net-wireless
+sys-kernel
