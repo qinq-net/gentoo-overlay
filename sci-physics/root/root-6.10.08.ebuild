@@ -370,7 +370,6 @@ daemon_install() {
 desktop_install() {
 	cd "${S}"
 	# tmva/test should exist
-	mkdir -pv "${S}/tmva/test" || true
 	echo "Icon=root-system-bin" >> etc/root.desktop
 	domenu etc/root.desktop
 	doicon build/package/debian/root-system-bin.png
@@ -399,6 +398,7 @@ src_install() {
 	# More information at https://sft.its.cern.ch/jira/browse/ROOT-8146
 	addwrite /dev/random
 
+	mkdir -pv "${S}/tmva/test" || true
 	DOCS=($(find README/* -maxdepth 1 -type f))
 	default
 	dodoc README.md
