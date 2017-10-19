@@ -10,7 +10,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="ftp://root.cern.ch/${PN}/${PN}_v${PV}.source.tar.gz"
 	KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
-	S="${WORKDIR}/${PN}"
+	S="${WORKDIR}/${PN}-${PV}"
 fi
 
 PYTHON_COMPAT=( python2_7 )
@@ -193,11 +193,8 @@ src_prepare() {
 		"${FILESDIR}"/${PN}-5.32.00-afs.patch \
 		"${FILESDIR}"/${PN}-5.32.00-cfitsio.patch \
 		"${FILESDIR}"/${PN}-5.32.00-chklib64.patch \
-		"${FILESDIR}"/${PN}-5.34.13-unuran.patch \
-		"${FILESDIR}"/${PN}-6.00.01-dotfont.patch \
-		"${FILESDIR}"/${PN}-6.06.00-nobyte-compile.patch \
-		"${FILESDIR}"/${PN}-6.00.01-llvm.patch
-
+		"${FILESDIR}"/${PN}-6.00.01-dotfont.patch
+	default
 	# make sure we use system libs and headers
 	rm montecarlo/eg/inc/cfortran.h README/cfortran.doc || die
 	#rm -r graf2d/asimage/src/libAfterImage || die
@@ -316,7 +313,7 @@ src_configure() {
 			$(use_enable math roofit)
 			$(use_enable math tmva)
 			$(use_enable math vc)
-			$(use_enable math vdt)
+			#$(use_enable math vdt)
 			$(use_enable math unuran)
 			$(use_enable mysql)
 			$(usex mysql \
@@ -372,6 +369,8 @@ daemon_install() {
 
 desktop_install() {
 	cd "${S}"
+	# tmva/test should exist
+	mkdir -pv "${S}/tmva/test" || true
 	echo "Icon=root-system-bin" >> etc/root.desktop
 	domenu etc/root.desktop
 	doicon build/package/debian/root-system-bin.png

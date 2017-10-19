@@ -47,11 +47,14 @@ DOC_DIR="/usr/share/doc/${ROOT_PN}-${PV}"
 
 S="${WORKDIR}/${ROOT_PN}-${PV}"
 
-src_prepare() {
-	epatch \
-		"${FILESDIR}/${PN}-6.00.01-makehtml.patch" \
-		"${FILESDIR}/${PN}-6.04.06-tightlist.patch"
+PATCHES=(
+	#"${FILESDIR}"/${PN}-6.00.01-makehtml.patch
+	"${FILESDIR}"/${PN}-6.04.06-tightlist.patch
+)
 
+src_prepare() {
+	default
+	epatch $PATCHES
 	# prefixify the configure script
 	sed -i \
 		-e "s:/usr:${EPREFIX}/usr:g" \
