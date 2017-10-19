@@ -1,0 +1,24 @@
+diff -Naur genkernel-next-68/gen_initramfs.sh genkernel-next-68-new/gen_initramfs.sh
+--- genkernel-next-68/gen_initramfs.sh	2017-09-09 17:36:38.000000000 +0800
++++ genkernel-next-68-new/gen_initramfs.sh	2017-10-18 14:24:57.330945543 +0800
+@@ -766,7 +766,7 @@
+ append_modules() {
+     local group
+     local group_modules
+-    local MOD_EXT=".ko"
++    local MOD_EXT=".ko.xz"
+ 
+     print_info 2 "initramfs: >> Searching for modules..."
+     if [ "${INSTALL_MOD_PATH}" != '' ]
+diff -Naur genkernel-next-68/gen_moddeps.sh genkernel-next-68-new/gen_moddeps.sh
+--- genkernel-next-68/gen_moddeps.sh	2017-09-09 17:36:38.000000000 +0800
++++ genkernel-next-68-new/gen_moddeps.sh	2017-10-18 14:25:21.602980582 +0800
+@@ -3,7 +3,7 @@
+ 
+ modules_kext()
+ {
+-    KEXT=".ko"
++    KEXT=".ko.xz"
+     echo ${KEXT}
+ }
+ 
