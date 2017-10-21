@@ -1,0 +1,12 @@
+diff -Naur root-6.10.08.origin/math/minuit2/CMakeLists.txt root-6.10.08/math/minuit2/CMakeLists.txt
+--- root-6.10.08.origin/math/minuit2/CMakeLists.txt	2017-10-20 22:19:13.721191943 +0800
++++ root-6.10.08/math/minuit2/CMakeLists.txt	2017-10-20 22:19:31.883969275 +0800
+@@ -9,7 +9,7 @@
+ if($ENV{USE_PARALLEL_MINUIT2})
+   if($ENV{USE_OPENMP})
+     add_definitions(-D_GLIBCXX_PARALLEL -fopenmp)
+-    set_target_properties(Minuit2 PROPERTIES LINK_FLAGS -fopenmp)
++    #set_target_properties(minuit2 PROPERTIES LINK_FLAGS -fopenmp)
+   elseif($ENV{USE_MPI})
+     add_definitions(-DMPIPROC)
+     set(CMAKE_CXX_COMPILER mpic++)
