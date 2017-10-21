@@ -22,7 +22,7 @@ IUSE="pluto onlyreco"
 
 DEPEND="
 	dev-util/cmake
-	sci-physics/root:=[http]
+	sci-physics/root:=[math,http]
 	sci-libs/gsl:=
 	dev-cpp/gtest:=
 	dev-libs/icu:=

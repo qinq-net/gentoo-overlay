@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>qinq_net@buaa.edu.cn</email>
+		<name>QIN Yuhao</name>
+	</maintainer>
+	<longdescription lang="en">
+		CbmRoot is the software package for simulation,
+		reconstruction, and data analysis for the CBM
+		experiment.
+	</longdescription>
+	<use>
+		<flag name="fieldmaps">Add a magnetic fieldmap for cbmroot</flag>
+	</use>
+</pkgmetadata>

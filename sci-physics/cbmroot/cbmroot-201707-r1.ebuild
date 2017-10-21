@@ -3,15 +3,15 @@
 
 EAPI=6
 
-DESCRIPTION=""
-HOMEPAGE=""
-ESVN_REPO_URI="https://subversion.gsi.de/cbmsoft/cbmroot/trunk"
+DESCRIPTION="Software for simulation, reconstruction, and data analysis for the CBM experiment"
+HOMEPAGE="https://redmine.cbm.gsi.de/projects/cbmroot"
+ESVN_REPO_URI="https://subversion.gsi.de/cbmsoft/cbmroot/release/JUL17"
 
 inherit subversion cmake-utils
 
 LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~x86 ~amd64 ~x86-linux ~amd64-linux"
 IUSE="+fieldmaps"
 
 DEPEND="
@@ -24,14 +24,15 @@ src_prepare() {
 	epatch "${FILESDIR}/${PN}-201707-nofairsoft.patch"
 	epatch "${FILESDIR}/${PN}-201707-boost.patch"
 	epatch "${FILESDIR}/${PN}-201707-getstring.patch"
+	epatch "${FILESDIR}/${PN}-201707-external.patch"
 	epatch "${FILESDIR}/${PN}-201707-macro-insdir.patch"
 	epatch "${FILESDIR}/${PN}-201707-mvd-rpath.patch"
 	cmake-utils_src_prepare
 }
 
 src_configure() {
-	export SIMPATH="${EPREFIX}/usr"
-	export FAIRROOTPATH="${EPREFIX}/usr"
+	export SIMPATH=${EPREFIX}/usr
+	export FAIRROOTPATH=${EPREFIX}/usr
 	local mycmakeargs=(
 		"-DBOOST_ROOT=${EPREFIX}/usr"
 		"-DBOOST_INCLUDEDIR=${EPREFIX}/usr/include/boost"
