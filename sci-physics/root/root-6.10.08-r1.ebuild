@@ -391,7 +391,7 @@ daemon_install() {
 }
 
 desktop_install() {
-	cd "${S}_build"
+	cd "${S}"
 	# tmva/test should exist
 	echo "Icon=root-system-bin" >> etc/root.desktop
 	domenu etc/root.desktop
@@ -448,7 +448,7 @@ src_install() {
 	rm -r "${ED}"/usr/share/emacs || die
 
 	daemon_install
-	#desktop_install
+	desktop_install
 	#cleanup_install
 
 	# do not copress files used by ROOT's CLI (.credit, .demo, .license)
