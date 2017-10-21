@@ -460,7 +460,7 @@ src_install() {
 	#cleanup_install
 
 	# do not copress files used by ROOT's CLI (.credit, .demo, .license)
-	docompress -x "${DOC_DIR}"/{CREDITS,LICENSE,examples/tutorials}
+	docompress -x "${DOC_DIR}"/{CREDITS,LICENSE,examples,tutorials}
 	docompress -x /usr/share/doc/root
 	# needed for .license command to work
 	dosym "${ED}"usr/portage/licenses/LGPL-2.1 "${DOC_DIR}/LICENSE"
