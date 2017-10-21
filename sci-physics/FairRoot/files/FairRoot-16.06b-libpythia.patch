@@ -1,0 +1,24 @@
+diff -Naur FairRoot-16.06b.origin/cmake/modules/FindPythia6.cmake FairRoot-16.06b/cmake/modules/FindPythia6.cmake
+--- FairRoot-16.06b.origin/cmake/modules/FindPythia6.cmake	2017-10-21 12:18:24.734400492 +0800
++++ FairRoot-16.06b/cmake/modules/FindPythia6.cmake	2017-10-21 12:16:47.567311895 +0800
+@@ -18,7 +18,7 @@
+ 
+ MESSAGE(STATUS "Looking for Pythia6...")
+ 
+-FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so PATHS
++FIND_PATH(Pythia6_LIBRARY_DIR NAMES libpythia6.so PATHS
+   ${Pythia6_DIR}/lib
+   ${AlFa_DIR}/lib
+   ${SIMPATH}/lib
+diff -Naur FairRoot-16.06b.origin/cmake/modules_old/FindGENERATORS.cmake FairRoot-16.06b/cmake/modules_old/FindGENERATORS.cmake
+--- FairRoot-16.06b.origin/cmake/modules_old/FindGENERATORS.cmake	2017-10-21 12:18:25.349395024 +0800
++++ FairRoot-16.06b/cmake/modules_old/FindGENERATORS.cmake	2017-10-21 12:16:22.822560294 +0800
+@@ -11,7 +11,7 @@
+ 
+ MESSAGE(STATUS "Looking for Pythia6...")
+ 
+-FIND_PATH(PYTHIA6_LIBRARY_DIR NAMES libPythia6.so PATHS
++FIND_PATH(PYTHIA6_LIBRARY_DIR NAMES libpythia6.so PATHS
+   ${SIMPATH}/lib
+   ${SIMPATH}/generators/lib
+   NO_DEFAULT_PATH

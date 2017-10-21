@@ -195,7 +195,7 @@ src_prepare() {
 	# 	"${FILESDIR}"/${PN}-5.32.00-cfitsio.patch \
 	# 	"${FILESDIR}"/${PN}-5.32.00-chklib64.patch \
 	# 	"${FILESDIR}"/${PN}-6.00.01-dotfont.patch \
-	# 	"${FILESDIR}"/${PN}-6.10.08-minuit2-cmakelist.patch
+	epatch "${FILESDIR}"/${PN}-6.10.08-minuit2-cmakelist.patch
 	default
 	# make sure we use system libs and headers
 	rm montecarlo/eg/inc/cfortran.h README/cfortran.doc || die
@@ -315,7 +315,7 @@ src_configure() { # Using CMake
 		-Dmathmore=$(usex math)
 		-Dmemstat=ON
 		-Dgminimal=OFF
-		#-Dminuit2=$(usex math)# Potential buggy
+		-Dminuit2=$(usex math)# Potential buggy
 		-Dmonalisa=OFF
 		-Dmt=ON# from Arch Linux
 		-Dmysql=$(usex mysql)
@@ -367,10 +367,12 @@ src_configure() { # Using CMake
 
 src_compile() {
 	sed -i -e 's/-lgsl/-lgsl -lgslcblas/' ${S}_build/math/mathmore/CMakeFiles/MathMore.dir/link.txt
-	touch ${S}_build/tutorials/hsimple.root
+	sed -i -e 's/-fPIC/-fopenmp/' ${S}_build/math/minuit2/CMakeFiles/Minuit2.dir/link.txt
+	sed -i -e 's/-e return/-e return ||touch hsimple.root/' ${S}_build/CMakeFiles/hsimple.dir/build.make
+	#touch ${S}_build/tutorials/hsimple.root
 	cmake-utils_src_compile
-	rm ${S}_build/tutorials/hsimple.root
-	make -C ${S}_build hsimple
+	#rm ${S}_build/tutorials/hsimple.root
+	#make -C ${S}_build hsimple
 }
 
 daemon_install() {
@@ -438,7 +440,7 @@ src_install() {
 		if use examples; then
 			# these should really be taken care of by the root make install
 			insinto ${DOC_DIR}/examples/tutorials/tmva
-			doins -r tmva/test
+			doins -r ${S}_build/tmva/test
 		fi
 	fi
 	doenvd 99root
@@ -453,6 +455,7 @@ src_install() {
 
 	# do not copress files used by ROOT's CLI (.credit, .demo, .license)
 	docompress -x "${DOC_DIR}"/{CREDITS,LICENSE,examples/tutorials}
+	docompress -x /usr/share/doc/root
 	# needed for .license command to work
 	dosym "${ED}"usr/portage/licenses/LGPL-2.1 "${DOC_DIR}/LICENSE"
 }

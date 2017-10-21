@@ -18,7 +18,6 @@ inherit git-r3 cmake-utils
 
 LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="pluto onlyreco"
 
 DEPEND="
@@ -51,6 +50,12 @@ RDEPEND="${DEPEND}"
 #	sci-physics/geant-vmc:4
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
+
+src_prepare() {
+	epatch \
+		"${FILESDIR}/${PN}-16.06b-libpythia.patch"
+	cmake-utils_src_prepare
+}
 
 src_configure() {
 	export SIMPATH=${EPREFIX}/usr

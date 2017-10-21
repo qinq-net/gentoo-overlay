@@ -1,0 +1,18 @@
+diff -Naur cbmroot-201707.origin/CMakeLists.txt cbmroot-201707/CMakeLists.txt
+--- cbmroot-201707.origin/CMakeLists.txt	2017-10-21 12:43:28.711312600 +0800
++++ cbmroot-201707/CMakeLists.txt	2017-10-21 12:43:57.879030641 +0800
+@@ -167,14 +167,6 @@
+ 
+   Set(Boost_NO_SYSTEM_PATHS TRUE)
+   Set(Boost_NO_BOOST_CMAKE TRUE)
+-#  set(Boost_DEBUG TRUE)
+-  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+-    set(BOOST_ROOT ${SIMPATH})
+-    set(GSL_DIR ${SIMPATH})
+-  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+-    set(BOOST_ROOT ${SIMPATH}/basics/boost)
+-    set(GSL_DIR ${SIMPATH}/basics/gsl)
+-  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+   Message("-- Looking for Boost ...")
+   # If an older version of boost is found both of the variables below are
+   # cached and in a second cmake run, a good boost version is found even 

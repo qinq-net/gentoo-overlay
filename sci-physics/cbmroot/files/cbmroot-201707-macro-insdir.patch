@@ -1,0 +1,21 @@
+diff -Naur cbmroot-201707.origin/macro/run/CMakeLists.txt cbmroot-201707/macro/run/CMakeLists.txt
+--- cbmroot-201707.origin/macro/run/CMakeLists.txt	2017-10-21 17:15:16.383546597 +0800
++++ cbmroot-201707/macro/run/CMakeLists.txt	2017-10-21 17:15:49.534550996 +0800
+@@ -101,5 +101,5 @@
+               run_digi.C run.C checkFields.C checkFieldMap.C checkFieldSym.C
+         DESTINATION share/cbmroot/macro/run
+        )
+-Install(DIRECTORY modules DESTINATION share/cbmroot/macro/run)
++Install(DIRECTORY modules DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/run)
+ Install(CODE "FILE(MAKE_DIRECTORY \${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/run/data)")
+diff -Naur cbmroot-201707.origin/macro/tof/CMakeLists.txt cbmroot-201707/macro/tof/CMakeLists.txt
+--- cbmroot-201707.origin/macro/tof/CMakeLists.txt	2017-10-21 17:15:16.391546105 +0800
++++ cbmroot-201707/macro/tof/CMakeLists.txt	2017-10-21 17:16:41.324593449 +0800
+@@ -42,6 +42,6 @@
+ #Install(CODE "FILE(MAKE_DIRECTORY \${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/run/data)")
+ 
+ Install(FILES qa/tof_qa_sim.C qa/tof_qa_ana.C qa/tof_qa_hp.C qa/tofDigiBdf.hst.root qa/tof.digibdf.par
+-        DESTINATION share/cbmroot/macro/tof/qa
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/tof/qa
+        )
+ Install(CODE "FILE(MAKE_DIRECTORY \${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/tof/qa/data)")

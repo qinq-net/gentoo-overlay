@@ -1,0 +1,12 @@
+diff -Naur cbmroot-201707.origin/ecal/CbmEcalParam.cxx cbmroot-201707/ecal/CbmEcalParam.cxx
+--- cbmroot-201707.origin/ecal/CbmEcalParam.cxx	2017-10-21 15:10:53.393524556 +0800
++++ cbmroot-201707/ecal/CbmEcalParam.cxx	2017-10-21 15:22:21.014042151 +0800
+@@ -119,7 +119,7 @@
+   if (skey!=NULL)
+   {
+     /** Value for this key already exists **/
+-    skey->GetString()=value;
++    skey->SetString(value);
+     return;
+   }
+   skey=new TObjString(key);
