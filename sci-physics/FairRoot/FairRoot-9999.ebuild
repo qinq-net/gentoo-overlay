@@ -14,39 +14,38 @@ else
 	KEYWORDS="~amd64 ~x86"
 	EGIT_CLONE_TYPE=single
 fi
-inherit git-r3 cmake-utils multilib
+inherit git-r3 cmake-utils
 
 LICENSE="LGPL-3"
 SLOT="0"
+KEYWORDS="~amd64 ~x86"
 IUSE="pluto onlyreco"
 
 DEPEND="
 	dev-util/cmake
-	sci-physics/root[http]
-	sci-libs/gsl
-	dev-cpp/gtest
-	dev-libs/icu
-	dev-libs/boost
+	sci-physics/root:=[http]
+	sci-libs/gsl:=
+	dev-cpp/gtest:=
+	dev-libs/icu:=
+	dev-libs/boost:=
 	!onlyreco? (
-		sci-physics/root[pythia6,pythia8]
-		sci-physics/hepmc
-		dev-libs/xerces-c
+		sci-physics/root:=[pythia6,pythia8]
+		sci-physics/hepmc:=
+		dev-libs/xerces-c:=
 		sci-physics/geant:4
 		sci-physics/geant-data:4
 		pluto? (
-			sci-physics/pluto
+			sci-physics/pluto:=
 			)
 		sci-physics/geant-vmc:3
-		sci-physics/vgm
+		sci-physics/vgm:=
 		)
-	media-libs/mesa
-	sci-physics/root
-	net-libs/zeromq
-	dev-libs/protobuf
-	dev-libs/flatbuffers
-	dev-libs/msgpack
-	dev-libs/nanomsg
-	www-servers/apache"
+	media-libs/mesa:=
+	net-libs/zeromq:=
+	dev-libs/protobuf:=
+	dev-libs/flatbuffers:=
+	dev-libs/msgpack:=
+	dev-libs/nanomsg:="
 RDEPEND="${DEPEND}"
 ## TODO: add support for the following dependencies
 #	sci-physics/geant-vmc:4
@@ -55,5 +54,11 @@ RDEPEND="${DEPEND}"
 
 src_configure() {
 	export SIMPATH=${EPREFIX}/usr
+	#sed -i -e "s/set(LIBRARY_OUTPUT_PATH \"\${CMAKE_BINARY_DIR}\/lib\")/set(LIBRARY_OUTPUT_PATH \"\${CMAKE_BINARY_DIR}\/$(get_libdir)\")/" ${S}/CMakeLists.txt ${S}/templates/project_template/CMakeLists.txt
 	cmake-utils_src_configure
+}
+
+src_install() {
+	cmake-utils_src_install
+	mv -bTv ${D}/usr/lib ${D}/usr/$(get_libdir)
 }
