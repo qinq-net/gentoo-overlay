@@ -60,7 +60,7 @@ src_prepare() {
 src_configure() {
 	export SIMPATH=${EPREFIX}/usr
 	local mycmakeargs=(
-		-DROOT_DIR="${EPREFIX}/usr"
+		-DSIMPATH="${EPREFIX}/usr"
 		-DBOOST_ROOT="${EPREFIX}/usr"
 		-DBOOST_INCLUDEDIR="${EPREFIX}/usr/include/boost"
 		-DBOOST_LIBRARYDIR="${EPREFIX}/usr/$(get_libdir)"

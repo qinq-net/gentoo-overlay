@@ -1,12 +1,12 @@
 diff -Naur FairRoot-16.06b.origin/cmake/modules/FindPythia6.cmake FairRoot-16.06b/cmake/modules/FindPythia6.cmake
---- FairRoot-17.10a.origin/cmake/modules/FindPythia6.cmake	2017-10-21 12:18:24.734400492 +0800
-+++ FairRoot-17.10a/cmake/modules/FindPythia6.cmake	2017-10-21 12:16:47.567311895 +0800
+--- FairRoot-16.06b.origin/cmake/modules/FindPythia6.cmake	2017-10-21 12:18:24.734400492 +0800
++++ FairRoot-16.06b/cmake/modules/FindPythia6.cmake	2017-10-21 12:16:47.567311895 +0800
 @@ -18,7 +18,7 @@
  
  MESSAGE(STATUS "Looking for Pythia6...")
  
--FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so libPythia6.dylib PATHS
-+FIND_PATH(Pythia6_LIBRARY_DIR NAMES libpythia6.so libpythia6.dylib PATHS
+-FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so PATHS
++FIND_PATH(Pythia6_LIBRARY_DIR NAMES libpythia6.so PATHS
    ${Pythia6_DIR}/lib
    ${AlFa_DIR}/lib
    ${SIMPATH}/lib
