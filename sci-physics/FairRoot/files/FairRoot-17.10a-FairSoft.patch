@@ -1,0 +1,24 @@
+diff -Naur FairRoot-17.10a.origin/CMakeLists.txt FairRoot-17.10a/CMakeLists.txt
+--- FairRoot-17.10a.origin/CMakeLists.txt	2017-10-24 02:29:26.944975422 +0800
++++ FairRoot-17.10a/CMakeLists.txt	2017-10-24 02:34:15.242979281 +0800
+@@ -83,20 +83,6 @@
+ #Check the compiler and set the compile and link flags
+ Check_Compiler()
+ 
+-# Check also if FairSoft has been compiled with C++11 or C++14 support
+-# If FairSoft is used the compiler flags provided by fairsoft-config
+-# are added to the variable CMAKE_CXX_FLAGS.
+-# If alibuild is used the compiler flags are passed on the command line
+-# and are also added to CMAKE_CXX_FLAGS.
+-# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
+-String(FIND ${CMAKE_CXX_FLAGS} "-std=c++11" POS_C++11)
+-If(${POS_C++11} EQUAL -1)
+-  String(FIND ${CMAKE_CXX_FLAGS} "-std=c++14" POS_C++11)
+-  If(${POS_C++11} EQUAL -1)
+-    Message(FATAL_ERROR "FairSoft wasn't compiled with c++11 or c++14 support. Please recompile FairSoft with a compiler which supports at least c++11.")
+-  EndIf()
+-EndIf()
+-
+ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
+ set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
+ 

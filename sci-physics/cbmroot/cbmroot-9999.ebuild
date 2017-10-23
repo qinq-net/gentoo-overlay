@@ -21,14 +21,18 @@ inherit subversion cmake-utils
 
 LICENSE="LGPL-3"
 SLOT="0"
-IUSE="+fieldmaps"
+IUSE="+fieldmaps pluto"
 
 DEPEND="
 	sci-physics/FairRoot:=[-onlyreco]
 	>=sci-physics/root-6:=[pythia6,pythia8,math]
 	dev-cpp/gtest:=
 	dev-libs/boost:=
-	net-libs/zeromq:="
+	net-libs/zeromq:=
+	pluto? (
+		sci-physics/pluto:=
+		sci-physics/FairRoot:=[pluto]
+		)"
 RDEPEND="${DEPEND}"
 PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:* )"
 
@@ -41,6 +45,7 @@ src_prepare() {
 	fi
 	epatch "${FILESDIR}/${PN}-2017.07-macro-insdir.patch"
 	epatch "${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
+	epatch "${FILESDIR}/${PN}-2017.10-include.patch"
 	cmake-utils_src_prepare
 }
 
@@ -59,6 +64,9 @@ src_install() {
 	cmake-utils_src_install
 	# libdir is hardcoded into CMakeLists
 	mv -Tv ${D}/usr/lib ${D}/usr/$(get_libdir)
-	rm ${D}/usr/bin/check_system.sh #Provided by sci-physics/FairRoot
+	rm -v ${D}/usr/bin/check_system.sh #Provided by sci-physics/FairRoot
+	# For the headers installation
+	cp -v ${D}/usr/include/report/*.h ${D}/usr/include/
+	rm -v ${D}/usr/include/*LinkDef.h
 }
 

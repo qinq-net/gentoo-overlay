@@ -13,4 +13,7 @@
 	<use>
 		<flag name="fieldmaps">Add a magnetic fieldmap for cbmroot</flag>
 	</use>
+	<use>
+		<flag name="pluto">Pull in support for sci-physics/pluto (TODO)</flag>
+	</use>
 </pkgmetadata>
