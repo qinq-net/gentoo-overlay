@@ -4,11 +4,11 @@
 
 EAPI=5
 
-inherit git-r3 linux-info
+inherit git-r3 linux-info linux-mod
 
-DESCRIPTION="Arch Linux kernel module for RTL8812AU, RTL8821AU based on v4.3.20 driver from Realtek"
-HOMEPAGE="https://github.com/Grawp/rtl8812au_8821au"
-EGIT_REPO_URI="https://github.com/Grawp/rtl8812au_rtl8821au"
+DESCRIPTION="rtl8812AU_8821AU linux kernel driver for AC1200 (801.11ac) Wireless Dual-Band USB Adapter"
+HOMEPAGE="https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git"
+EGIT_REPO_URI="https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -18,13 +18,9 @@ IUSE=""
 DEPEND=""
 RDEPEND="${DEPEND}"
 
+MODULE_NAMES="rtl8812au(net/wireless)"
+
 src_compile() {
 	set_arch_to_kernel
 	make KSRC="${KV_DIR}" KVER="${KV_FULL}"
-}
-
-src_install() {
-	insinto "/lib/modules/${KV_FULL}/kernel/drivers/net/wireless/"
-	doins 8812au.ko
-	#emake MODDESTDIR="${ED}/lib/modules/${KV_FULL}/kernel/drivers/net/wireless/" install
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>QIN Yuhao</name>
+		<email>qinq_net@buaa.edu.cn</email>
+	</maintainer>
+	<longdescription lang="en">
+		Realtek 8812AU/8821AU USB WiFi driver for AC1200 (801.11ac) Wireless Dual-Band USB Adapter
+	</longdescription>
+</pkgmetadata>
