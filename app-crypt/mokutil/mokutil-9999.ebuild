@@ -18,7 +18,9 @@ LICENSE=""
 SLOT="0"
 IUSE=""
 
-DEPEND="dev-libs/openssl:="
+DEPEND="
+	dev-libs/openssl:=
+	sys-libs/efivar:="
 RDEPEND="${DEPEND}"
 
 src_prepare() {
