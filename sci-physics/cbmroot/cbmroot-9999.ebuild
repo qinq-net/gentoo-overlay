@@ -19,7 +19,7 @@ fi
 
 inherit subversion cmake-utils
 
-LICENSE="LGPL-3"
+LICENSE="GPL-2"
 SLOT="0"
 IUSE="+fieldmaps pluto"
 

@@ -12,7 +12,7 @@ for d in ${CBMROOT_FIELDMAPS}; do
 done
 unset d
 
-LICENSE="LGPL-3"
+LICENSE="GPL-2"
 SLOT="${PV}"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
