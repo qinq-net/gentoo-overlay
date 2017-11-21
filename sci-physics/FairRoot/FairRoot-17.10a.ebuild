@@ -31,14 +31,13 @@ DEPEND="
 		sci-physics/root:=[pythia6,pythia8]
 		sci-physics/hepmc
 		dev-libs/xerces-c
-		sci-physics/geant:4
+		sci-physics/geant:4[geant3]
 		sci-physics/geant-data:4
 		pluto? (
 			sci-physics/pluto:=
 			)
 		|| (
 			sci-physics/geant:3
-			sci-physics/geant:4[geant3]
 			sci-physics/geant-vmc:3
 		)
 		sci-physics/vgm
