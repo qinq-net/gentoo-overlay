@@ -37,7 +37,6 @@ DEPEND="
 			sci-physics/pluto:=
 			)
 		|| (
-			sci-physics/geant:3
 			sci-physics/geant-vmc:3
 		)
 		sci-physics/vgm
