@@ -36,7 +36,11 @@ DEPEND="
 		pluto? (
 			sci-physics/pluto:=
 			)
-		sci-physics/geant-vmc:3
+		|| (
+			sci-physics/geant:3
+			sci-physics/geant:4[geant3]
+			sci-physics/geant-vmc:3
+		)
 		sci-physics/vgm
 		)
 	media-libs/mesa
