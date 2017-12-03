@@ -14,7 +14,7 @@ HOMEPAGE="https://www.gentoo.org/"
 LICENSE="GPL-2"
 SLOT="0"
 
-IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux xz"
+IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux"
 DOCS=( AUTHORS )
 
 DEPEND="app-text/asciidoc
@@ -41,11 +41,7 @@ src_prepare() {
 	default
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \
 		die "Could not setup release"
-	if use xz; then
-		epatch "${FILESDIR}/xz.patch"
-	else
-		epatch "${FILESDIR}/else.patch"
-	fi
+	epatch "${FILESDIR}/else.patch"
 }
 
 src_install() {

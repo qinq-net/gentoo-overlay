@@ -18,7 +18,7 @@ diff -Naur genkernel-next-68/gen_moddeps.sh genkernel-next-68-new/gen_moddeps.sh
  modules_kext()
  {
 -    KEXT=".ko"
-+    KEXT=".ko*"
++    KEXT=".ko.*"
      echo ${KEXT}
  }
  

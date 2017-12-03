@@ -18,7 +18,6 @@
 		<flag name="iscsi">Enable support for open-iscsi (include open-iscsi dependency)</flag>
 		<flag name="mdadm">Enable support for mdadm (include mdadm dependency)</flag>
 		<flag name="plymouth">Enable support for Plymouth (include Plymouth dependency)</flag>
-		<flag name="xz">Find xz-compressed modules while creating initramfs</flag>
 	</use>
 	<upstream>
 		<remote-id type="github">Sabayon/genkernel-next</remote-id>
