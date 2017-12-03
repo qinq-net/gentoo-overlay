@@ -39,11 +39,10 @@ PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:* )"
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
 	epatch "${FILESDIR}/${PN}-2017.07-boost.patch"
-	epatch "${FILESDIR}/${PN}-2017.07-getstring.patch"
 	if [[ ${PV} == 2017.07 ]]; then 
 		epatch "${FILESDIR}/${PN}-2017.07-external.patch"
 	fi
-	epatch "${FILESDIR}/${PN}-2017.07-macro-insdir.patch"
+	epatch "${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
 	epatch "${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
 	epatch "${FILESDIR}/${PN}-2017.10-include.patch"
 	cmake-utils_src_prepare

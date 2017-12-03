@@ -17,8 +17,12 @@ SLOT="${PV}"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="sci-physics/cbmroot"
-RDEPEND="${DEPEND}"
+RDEPEND="sci-physics/cbmroot"
+DEPEND="${RDEPEND}
+	net-misc/wget"
+# Server has no valid cert for Gentoo
+FETCHCOMMAND="/usr/bin/wget --no-check-certificate \${URI} -P \${DISTFILES}" 
+RESUMECOMMAND="/usr/bin/wget -c --no-check-certificate \${URI} -P \${DISTFILES}" 
 
 S="${WORKDIR}"
 

@@ -375,7 +375,9 @@ src_configure() { # Using CMake
 }
 
 src_compile() {
-	#touch ${S}_build/tutorials/hsimple.root
+	# walkthrough hsimple sandbox violation
+	mkdir -pv ${BUILD_DIR}/tutorials
+	touch ${BUILD_DIR}/tutorials/hsimple.root
 	cmake-utils_src_compile
 	#rm ${S}_build/tutorials/hsimple.root
 	#make -C ${S}_build hsimple

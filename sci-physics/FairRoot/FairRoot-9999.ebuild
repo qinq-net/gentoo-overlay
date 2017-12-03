@@ -21,7 +21,7 @@ SLOT="0/${PV}"
 IUSE="pluto onlyreco"
 
 DEPEND="
-	dev-util/cmake
+	>=dev-util/cmake-3.9.4
 	sci-physics/root:=[math,http]
 	sci-libs/gsl
 	dev-cpp/gtest:=
