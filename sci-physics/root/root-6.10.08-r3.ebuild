@@ -197,6 +197,7 @@ src_prepare() {
 	# 	"${FILESDIR}"/${PN}-6.00.01-dotfont.patch \
 	epatch "${FILESDIR}"/${PN}-6.10.08-minuit2-cmakelist.patch
 	epatch "${FILESDIR}"/${PN}-6.10.08-throw_libgfortranbegin.patch
+	epatch "${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
 	default
 	# make sure we use system libs and headers
 	rm montecarlo/eg/inc/cfortran.h README/cfortran.doc || die
@@ -369,15 +370,15 @@ src_configure() { # Using CMake
 		-Dx11=$(usex X)
 	)
 	cmake-utils_src_configure
-	sed -i -e '/-lgslcblas/!s/-lgsl/-lgsl -lgslcblas/' ${BUILD_DIR}/math/mathmore/CMakeFiles/MathMore.dir/link.txt
+	#sed -i -e '/-lgslcblas/!s/-lgsl/-lgsl -lgslcblas/' ${BUILD_DIR}/math/mathmore/CMakeFiles/MathMore.dir/link.txt
 	sed -i -e '/-fopenmp/!s/-fPIC/-fPIC -fopenmp/' ${BUILD_DIR}/math/minuit2/CMakeFiles/Minuit2.dir/link.txt
-	sed -i -e '/-e return/s/$/||touch hsimple.root/' ${BUILD_DIR}/CMakeFiles/hsimple.dir/build.make
+	#sed -i -e '/-e return/s/$/||touch hsimple.root/' ${BUILD_DIR}/CMakeFiles/hsimple.dir/build.make
 }
 
 src_compile() {
 	# walkthrough hsimple sandbox violation
-	mkdir -pv ${BUILD_DIR}/tutorials
-	touch ${BUILD_DIR}/tutorials/hsimple.root
+	#mkdir -pv ${BUILD_DIR}/tutorials
+	#touch ${BUILD_DIR}/tutorials/hsimple.root
 	cmake-utils_src_compile
 	#rm ${BUILD_DIR}/tutorials/hsimple.root
 	#make -C ${BUILD_DIR} hsimple
