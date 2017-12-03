@@ -369,9 +369,9 @@ src_configure() { # Using CMake
 		-Dx11=$(usex X)
 	)
 	cmake-utils_src_configure
-	sed -i -e '/-lgslcblas/!s/-lgsl/-lgsl -lgslcblas/' ${S}_build/math/mathmore/CMakeFiles/MathMore.dir/link.txt
-	sed -i -e '/-fopenmp/!s/-fPIC/-fPIC -fopenmp/' ${S}_build/math/minuit2/CMakeFiles/Minuit2.dir/link.txt
-	sed -i -e '/-e return/s/$/||touch hsimple.root/' ${S}_build/CMakeFiles/hsimple.dir/build.make
+	sed -i -e '/-lgslcblas/!s/-lgsl/-lgsl -lgslcblas/' ${BUILD_DIR}/math/mathmore/CMakeFiles/MathMore.dir/link.txt
+	sed -i -e '/-fopenmp/!s/-fPIC/-fPIC -fopenmp/' ${BUILD_DIR}/math/minuit2/CMakeFiles/Minuit2.dir/link.txt
+	sed -i -e '/-e return/s/$/||touch hsimple.root/' ${BUILD_DIR}/CMakeFiles/hsimple.dir/build.make
 }
 
 src_compile() {
@@ -379,8 +379,8 @@ src_compile() {
 	mkdir -pv ${BUILD_DIR}/tutorials
 	touch ${BUILD_DIR}/tutorials/hsimple.root
 	cmake-utils_src_compile
-	#rm ${S}_build/tutorials/hsimple.root
-	#make -C ${S}_build hsimple
+	#rm ${BUILD_DIR}/tutorials/hsimple.root
+	#make -C ${BUILD_DIR} hsimple
 }
 
 daemon_install() {
@@ -396,7 +396,7 @@ daemon_install() {
 	done
 	if use xinetd; then
 		insinto /etc/xinetd
-		doins "${S}_build"/etc/daemons/{rootd,proofd}.xinetd
+		doins "${BUILD_DIR}"/etc/daemons/{rootd,proofd}.xinetd
 	fi
 }
 
@@ -431,7 +431,7 @@ src_install() {
 	# More information at https://sft.its.cern.ch/jira/browse/ROOT-8146
 	addwrite /dev/random
 
-	mkdir -pv "${S}_build/tmva/test" || true
+	mkdir -pv "${BUILD_DIR}/tmva/test" || true
 	DOCS=($(find README/* -maxdepth 1 -type f))
 	cmake-utils_src_install
 	dodoc README.md
@@ -448,7 +448,7 @@ src_install() {
 		if use examples; then
 			# these should really be taken care of by the root make install
 			insinto ${DOC_DIR}/examples/tutorials/tmva
-			doins -r ${S}_build/tmva/test
+			doins -r ${BUILD_DIR}/tmva/test
 		fi
 	fi
 	doenvd 99root
