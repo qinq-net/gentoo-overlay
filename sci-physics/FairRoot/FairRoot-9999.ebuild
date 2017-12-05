@@ -39,7 +39,6 @@ DEPEND="
 		|| (
 			sci-physics/geant-vmc:3
 		)
-		sci-physics/vgm
 		)
 	media-libs/mesa
 	net-libs/zeromq

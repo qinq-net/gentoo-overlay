@@ -34,7 +34,9 @@ DEPEND="
 		sci-physics/FairRoot:=[pluto]
 		)"
 RDEPEND="${DEPEND}"
-PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:* )"
+PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:12a
+                      sci-physics/cbmroot-fieldmaps:12b
+                      sci-physics/cbmroot-fieldmaps:16a )"
 
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-2017.07-nofairsoft.patch"

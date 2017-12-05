@@ -128,8 +128,8 @@ PDEPEND="doc? ( ~app-doc/root-docs-${PV}[http=,math=] )"
 DOC_DIR="/usr/share/doc/${P}"
 
 die_compiler() {
-	die "Need one of the following C++11 capable compilers:"\
-		"    >=sys-devel/gcc[cxx]-4.8"\
+	die "Need one of the following C++14 capable compilers:"\
+		"    >=sys-devel/gcc[cxx]-6.3"\
 		"    >=sys-devel/clang-3.4"\
 		"    >=dev-lang/icc-13"
 }
@@ -271,8 +271,8 @@ src_configure() { # Using CMake
 		-Dbuiltin_xrootd=OFF
 		-Dbuiltin_llvm=ON
 		-Dbuiltin_tbb=ON
-		-Dcxx11=ON
-		-Dcxx14=OFF
+		-Dcxx11=OFF
+		-Dcxx14=ON
 		-Dcxx17=OFF
 		-Dcastor=OFF
 		#-DCASTOR_DIR=
