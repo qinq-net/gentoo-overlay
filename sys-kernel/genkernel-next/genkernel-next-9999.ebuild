@@ -3,10 +3,11 @@
 
 EAPI=6
 
-SRC_URI="https://github.com/Sabayon/genkernel-next/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~x86"
+EGIT_REPO_URI="https://github.com/qinq-net/genkernel-next"
+KEYWORDS=""
 inherit bash-completion-r1
 inherit eutils
+inherit git-r3
 
 DESCRIPTION="Gentoo automatic kernel building scripts, reloaded"
 HOMEPAGE="https://www.gentoo.org/"
@@ -41,7 +42,6 @@ src_prepare() {
 	default
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \
 		die "Could not setup release"
-	epatch "${FILESDIR}/genkernel-next-68-kmod-ext.patch"
 }
 
 src_install() {
