@@ -14,7 +14,7 @@ HOMEPAGE="https://www.gentoo.org/"
 LICENSE="GPL-2"
 SLOT="0"
 
-IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux"
+IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux zfs-encryption"
 DOCS=( AUTHORS )
 
 DEPEND="app-text/asciidoc
@@ -35,13 +35,17 @@ RDEPEND="${DEPEND}
 	!<sys-apps/openrc-0.9.9
 	sys-apps/util-linux
 	sys-block/thin-provisioning-tools
-	sys-fs/lvm2"
+	sys-fs/lvm2
+	zfs-encryption? ( >=sys-fs/zfs-0.8 )"
 
 src_prepare() {
 	default
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \
 		die "Could not setup release"
 	epatch "${FILESDIR}/genkernel-next-68-kmod-ext.patch"
+	if use zfs-encryption; then
+	    epatch "${FILESDIR}/genkernel-next-68-zfs-load.patch"
+	fi
 }
 
 src_install() {

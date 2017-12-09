@@ -15,7 +15,7 @@ HOMEPAGE="https://www.gentoo.org/"
 LICENSE="GPL-2"
 SLOT="0"
 
-IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux"
+IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux +zfs-encryption"
 DOCS=( AUTHORS )
 
 DEPEND="app-text/asciidoc
@@ -36,8 +36,16 @@ RDEPEND="${DEPEND}
 	!<sys-apps/openrc-0.9.9
 	sys-apps/util-linux
 	sys-block/thin-provisioning-tools
-	sys-fs/lvm2"
+	sys-fs/lvm2
+	zfs-encryption? ( >=sys-fs/zfs-0.8 )"
 
+src_unpack() {
+	if use "zfs-encryption"; then
+		EGIT_BRANCH="zfs-load"
+	fi
+	git-r3_src_unpack
+}
+		
 src_prepare() {
 	default
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \

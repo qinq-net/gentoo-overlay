@@ -1,7 +1,8 @@
-diff -Naur genkernel-next-68/gen_initramfs.sh genkernel-next-68-new/gen_initramfs.sh
---- genkernel-next-68/gen_initramfs.sh	2017-09-09 17:36:38.000000000 +0800
-+++ genkernel-next-68-new/gen_initramfs.sh	2017-10-18 14:24:57.330945543 +0800
-@@ -766,7 +766,7 @@
+diff --git a/gen_initramfs.sh b/gen_initramfs.sh
+index 955b273..abcdd19 100755
+--- a/gen_initramfs.sh
++++ b/gen_initramfs.sh
+@@ -777,7 +777,7 @@ print_list()
  append_modules() {
      local group
      local group_modules
@@ -10,9 +11,19 @@ diff -Naur genkernel-next-68/gen_initramfs.sh genkernel-next-68-new/gen_initramf
  
      print_info 2 "initramfs: >> Searching for modules..."
      if [ "${INSTALL_MOD_PATH}" != '' ]
-diff -Naur genkernel-next-68/gen_moddeps.sh genkernel-next-68-new/gen_moddeps.sh
---- genkernel-next-68/gen_moddeps.sh	2017-09-09 17:36:38.000000000 +0800
-+++ genkernel-next-68-new/gen_moddeps.sh	2017-10-18 14:25:21.602980582 +0800
+@@ -821,7 +821,7 @@ append_modules() {
+ }
+ 
+ append_drm() {
+-    local MOD_EXT=".ko"
++    local MOD_EXT=".ko*"
+ 
+     print_info 2 "initramfs: >> Appending drm drivers..."
+     if [ "${INSTALL_MOD_PATH}" != '' ]
+diff --git a/gen_moddeps.sh b/gen_moddeps.sh
+index 27dab48..1700b35 100755
+--- a/gen_moddeps.sh
++++ b/gen_moddeps.sh
 @@ -3,7 +3,7 @@
  
  modules_kext()
