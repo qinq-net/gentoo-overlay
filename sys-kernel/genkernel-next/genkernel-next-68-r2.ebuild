@@ -43,6 +43,7 @@ src_prepare() {
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \
 		die "Could not setup release"
 	epatch "${FILESDIR}/genkernel-next-68-kmod-ext.patch"
+	epatch "${FILESDIR}/genkernel-next-68-firmware-subdir.patch"
 	if use zfs-encryption; then
 	    epatch "${FILESDIR}/genkernel-next-68-zfs-load.patch"
 	fi
