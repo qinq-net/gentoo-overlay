@@ -16,22 +16,22 @@ else
 	ESVN_REPO_URI="https://subversion.gsi.de/cbmsoft/cbmroot/release/${RELEASE_MONTH}${RELEASE_YEAR}"
 	KEYWORDS="~x86 ~amd64 ~x86-linux ~amd64-linux"
 fi
-
-inherit subversion cmake-utils
+ROOT_REQUIRED_USE="pythia6,pythia8,math"
+inherit subversion cmake-utils root
 
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="+fieldmaps pluto"
+REQUIRED_USE="!root_target_root6_11 !root_target_root6_12"
 
 DEPEND="
-	sci-physics/FairRoot:=[-onlyreco]
-	>=sci-physics/root-6:=[pythia6,pythia8,math]
+	$(get_root_deps sci-physics/FairRoot -onlyreco)
 	dev-cpp/gtest:=
 	dev-libs/boost:=
 	net-libs/zeromq:=
 	pluto? (
 		sci-physics/pluto:=
-		sci-physics/FairRoot:=[pluto]
+		$(get_root_deps sci-physics/FairRoot pluto)
 		)"
 RDEPEND="${DEPEND}"
 PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:12a
@@ -41,33 +41,42 @@ PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:12a
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
 	epatch "${FILESDIR}/${PN}-2017.07-boost.patch"
-	if [[ ${PV} == 2017.07 ]]; then 
-		epatch "${FILESDIR}/${PN}-2017.07-external.patch"
-	fi
 	epatch "${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
 	epatch "${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
-	epatch "${FILESDIR}/${PN}-2017.10-include.patch"
 	cmake-utils_src_prepare
+}
+
+_root_multibuild_wrapper() {
+	debug-print-function ${FUNCNAME} "${@}"
+	local rootpv=${MULTIBUILD_VARIANT##root}
+	rootpv=${rootpv//_/.}
+	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
+	export FAIRROOTPATH=${ROOT_DIR}
+	mycmakeargs+=(
+		-DROOT_DIR=${EPREFIX}/opt/root/${rootpv}
+		-DCMAKE_INSTALL_PREFIX=${EPREFIX}/opt/root/${rootpv}
+		-DGEANT3_PATH=${ROOT_DIR}
+	)
+	"${@}"
 }
 
 src_configure() {
 	export SIMPATH="${EPREFIX}/usr"
-	export FAIRROOTPATH="${EPREFIX}/usr"
 	local mycmakeargs=(
 		"-DBOOST_ROOT=${EPREFIX}/usr"
 		"-DBOOST_INCLUDEDIR=${EPREFIX}/usr/include/boost"
 		"-DBOOST_LIBRARYDIR=${EPREFIX}/usr/$(get_libdir)"
 		)
-	cmake-utils_src_configure
+	root_src_configure
 }
 
 src_install() {
-	cmake-utils_src_install
-	# libdir is hardcoded into CMakeLists
-	mv -Tv ${D}/usr/lib ${D}/usr/$(get_libdir)
-	rm -v ${D}/usr/bin/check_system.sh #Provided by sci-physics/FairRoot
-	# For the headers installation
-	cp -v ${D}/usr/include/report/*.h ${D}/usr/include/
-	rm -v ${D}/usr/include/*LinkDef.h
+	root_src_install
+	find ${D} -name 'check_system.sh' -delete
+	if use fieldmaps; then
+		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12a.root 
+		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12b.root 
+		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v16a.root
+	fi
 }
 

@@ -1,0 +1,101 @@
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: $
+
+DESCRIPTION="Manage multislotting sci-physics/root"
+MAINTAINER="QIN Yuhao"
+VERSION="20171216"
+
+# find a list of targets
+find_targets() {
+	local pv
+	for pv in $EPREFIX/opt/root/*; do
+		[[ -d ${pv} ]] && basename "${pv}"
+	done
+}
+
+# remove the root env
+remove_env() {
+	rm "${EPREFIX}/etc/env.d/98root"
+	env-update
+}
+
+# set the root env
+set_env() {
+	local pv=$1
+	if is_number "${pv}"; then
+		local targets=( $(find_targets) )
+		pv=${targets[pv-1]}
+	fi
+
+	[[ -z ${pv} || ! -d ${EPREFIX}/opt/root/${pv} ]] \
+		&& die -q "Target \"$1\" doesn't appear to be valid!"
+	ln -s "99root-${pv}" "${EPREFIX}/etc/env.d/98root"
+	env-update
+}
+
+## show action ##
+
+describe_show() {
+	echo "Show the current sci-physics/root env"
+}
+
+do_show() {
+	write_list_start "Current sci-physics/root env:"
+	if [[ -L ${EPREFIX}/etc/env.d/98root ]]; then
+		local envpv=$(canonicalise "${EPREFIX}/etc/env.d/98root")
+		write_kv_list_entry "${envpv##99root-}" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+## list action ##
+
+describe_list() {
+	echo "List avaliable sci-physics/root env targets"
+}
+
+do_list() {
+	local i targets=( $(find_targets) )
+	local current_envpv=$(basename "$(canonicalise "${EPREFIX}/etc/env.d/98root")")
+	write_list_start "Available sci-physics/root env targets:"
+	for (( i=0; i < ${#targets[@]}; i++ )); do
+		# highlight the target where the envlink is pointing to
+		[[ ${targets[i]} = \
+			${current_envpv##99root-} ]] \
+			&& targets[i]=$(highlight_marker "${targets[i]}")
+	done
+	write_numbered_list -m "(none found)" "${targets[@]}"
+}
+
+## set action ##
+
+describe_set() {
+	echo "Set a new ROOT env target"
+}
+
+describe_set_parameters() {
+	echo "<target>"
+}
+
+describe_set_options() {
+	echo "target: Target name or number (from 'list' action)"
+}
+
+do_set() {
+	[[ -z "$1" ]] && die -q "You didn't tell me what to set the env to"
+	[[ "$#" -gt 1 ]] && die -q "Too many parameters"
+
+	if [[ -L ${EPREFIX}/etc/env.d/98root ]]; then
+		# existing env
+		remove_env || die -q "Couldn't remove existing env"
+		set_env "${1}" || die -q "Couldn't set a new env"
+	elif [[ -e ${EPREFIX}/etc/env.d/98root ]]; then
+		# 98root is not a symlink
+		die -q "${EPREFIX}/etc/env.d/98root exists but is not a symlink"
+	else
+		set_env "${1}" || die -q "Couldn't set a new env"
+	fi
+}
+#vim: ts=4 sw=4 noet fdm=marker

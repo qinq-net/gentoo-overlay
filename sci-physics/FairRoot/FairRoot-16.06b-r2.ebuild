@@ -14,7 +14,8 @@ else
 	KEYWORDS="~amd64 ~x86"
 	EGIT_CLONE_TYPE=single
 fi
-inherit git-r3 cmake-utils
+ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
+inherit git-r3 cmake-utils root
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
@@ -22,13 +23,11 @@ IUSE="pluto onlyreco"
 
 DEPEND="
 	dev-util/cmake
-	sci-physics/root:=[math,http]
 	sci-libs/gsl
 	dev-cpp/gtest:=
 	dev-libs/icu
 	dev-libs/boost:=
 	!onlyreco? (
-		sci-physics/root:=[pythia6,pythia8]
 		sci-physics/hepmc
 		dev-libs/xerces-c
 		sci-physics/geant:4[geant3]
@@ -37,7 +36,7 @@ DEPEND="
 			sci-physics/pluto:=
 			)
 		|| (
-			sci-physics/geant-vmc:3
+			$(get_root_deps sci-physics/geant-vmc:3)
 		)
 		)
 	media-libs/mesa
@@ -57,13 +56,20 @@ src_prepare() {
 	cmake-utils_src_prepare
 }
 
-src_configure() {
-	export SIMPATH=${EPREFIX}/usr
-	cmake-utils_src_configure
+_root_multibuild_wrapper() {
+	debug-print-function ${FUNCNAME} "${@}"
+	local rootpv=${MULTIBUILD_VARIANT##root}
+	rootpv=${rootpv//_/.}
+	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
+	mycmakeargs+=(
+		-DROOT_DIR=${EPREFIX}/opt/root/${rootpv}
+		-DCMAKE_INSTALL_PREFIX=${EPREFIX}/opt/root/${rootpv}
+		-DGEANT3_PATH=${ROOT_DIR}
+	)
+	"${@}"
 }
 
-src_install() {
-	cmake-utils_src_install
-	# libdir is hardcoded into CMakeLists
-	mv -Tv ${D}/usr/lib ${D}/usr/$(get_libdir)
+src_configure() {
+	export SIMPATH=${EPREFIX}/usr
+	root_src_configure
 }

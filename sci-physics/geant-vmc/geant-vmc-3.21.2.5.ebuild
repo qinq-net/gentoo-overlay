@@ -3,7 +3,8 @@
 
 EAPI=6
 
-inherit cmake-utils fortran-2
+ROOT_REQUIRED_USE="pythia6"
+inherit cmake-utils fortran-2 root
 DESCRIPTION="CERN's detector description and simulation Tool"
 HOMEPAGE="https://github.com/FairRootGroup/geant3"
 SRC_URI="https://root.cern.ch/download/vmc/geant3+_vmc.2.5.tar.gz"
@@ -15,12 +16,11 @@ KEYWORDS="~amd64 ~x86"
 IUSE="examples"
 
 RDEPEND="
-	sci-physics/root:=[pythia6]
 	!sci-physics/geant:3"
 DEPEND="${RDEPEND}"
 
 src_install() {
-	cmake-utils_src_install
+	root_src_install
 	if use examples; then
 		insinto /usr/share/doc/${PF}
 		doins -r examples
