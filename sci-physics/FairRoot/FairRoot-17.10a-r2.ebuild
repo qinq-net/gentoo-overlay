@@ -6,16 +6,22 @@ EAPI=6
 DESCRIPTION="A simulation, reconstruction and analysis framework that is based on the ROOT system."
 HOMEPAGE="https://github.com/FairRootGroup/FairRoot"
 EGIT_REPO_URI="https://github.com/FairRootGroup/FairRoot.git"
-if [[ ${PV} == "9999" ]] ; then
+_USE_EGIT_REPO=n
+if [[ ${PV} == *"9999" ]] ; then
+	inherit git-r3
+	_USE_EGIT_REPO=y
 	KEYWORDS=""
-	EGIT_CLONE_TYPE=single+tags
+	if [[ ${PV} != "9999" ]] ; then
+		EGIT_BRANCH="v-${PV%%.9999}_patches"
+	fi
 else
-	EGIT_COMMIT="v-${PV}"
+	SRC_URI="https://github.com/FairRootGroup/FairRoot/archive/v-${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	EGIT_CLONE_TYPE=single
+	S="${WORKDIR}/${PN}-v-${PV}"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
-inherit git-r3 cmake-utils root
+ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12"
+inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
@@ -50,26 +56,16 @@ RDEPEND="${DEPEND}"
 #	sci-physics/geant-vmc:4
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
+PATCHES=(
+	"${FILESDIR}/${PN}-17.10a-libpythia.patch"
+	"${FILESDIR}/${PN}-17.10a-FairSoft.patch"
+	)
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-17.10a-libpythia.patch"
-	epatch "${FILESDIR}/${PN}-17.10a-FairSoft.patch"
 	cmake-utils_src_prepare
+	elog "Swapping libdir"
+	sed -i "s/\${SIMPATH}\/lib/\${SIMPATH}\/$(get_libdir)/g" `find ${S}/cmake -name '*.cmake'`
 }
-
-_root_multibuild_wrapper() {
-	debug-print-function ${FUNCNAME} "${@}"
-	local rootpv=${MULTIBUILD_VARIANT##root}
-	rootpv=${rootpv//_/.}
-	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
-	mycmakeargs+=(
-		-DROOT_DIR=${EPREFIX}/opt/root/${rootpv}
-		-DCMAKE_INSTALL_PREFIX=${EPREFIX}/opt/root/${rootpv}
-		-DGEANT3_PATH=${ROOT_DIR}
-	)
-	"${@}"
-}
-
 src_configure() {
 	export SIMPATH=${EPREFIX}/usr
 	local mycmakeargs=(

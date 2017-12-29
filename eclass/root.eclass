@@ -7,19 +7,25 @@
 # @AUTHOR:
 # QIN Yuhao
 # @BLURB: 
-# @DESCRIPTION:
+# @DESCRIPTION: Managing packages depending on ROOT
 
 inherit multibuild cmake-utils
 EXPORT_FUNCTIONS src_configure src_compile src_test src_install
 
-ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12"
+if [[ "${ROOT_COMPAT}" != "" ]]; then
+	ROOT_TARGETS=${ROOT_COMPAT}
+else
+	ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12"
+fi
+
 if [[ "${ROOT_REQUIRED_USE}" != "" ]]; then
 	ROOT_REQUIRED_USE="[${ROOT_REQUIRED_USE}]"
 fi
 for target in ${ROOT_TARGETS}; do
-	IUSE_ROOT_TARGETS+=" -root_target_${target}"
+	IUSE_ROOT_TARGETS+=" root_target_${target}"
 done
 IUSE+=$IUSE_ROOT_TARGETS
+REQUIRED_USE+="|| (${IUSE_ROOT_TARGETS} )"
 get_root_deps() {
 	if [[ ! -z "$2" ]]; then
 		local extra_use=",$2"
@@ -43,14 +49,6 @@ get_root_targets() {
 	done
 }
 RDEPEND+="$(make_root_deps)"
-#RDEPEND+="
-#	root_target_root5_34? ( sci-physics/root:5.34${ROOT_REQUIRED_USE} )
-#	root_target_root6_04? ( sci-physics/root:6.04${ROOT_REQUIRED_USE} )
-#	root_target_root6_08? ( sci-physics/root:6.08${ROOT_REQUIRED_USE} )
-#	root_target_root6_10? ( sci-physics/root:6.10${ROOT_REQUIRED_USE} )
-#	root_target_root6_11? ( sci-physics/root:6.11${ROOT_REQUIRED_USE} )
-#	root_target_root6_12? ( sci-physics/root:6.12${ROOT_REQUIRED_USE} )
-#	"
 DEPEND+="${RDEPEND}"
 
 root_src_configure() {

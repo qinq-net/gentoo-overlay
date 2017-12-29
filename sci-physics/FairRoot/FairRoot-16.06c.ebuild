@@ -20,7 +20,7 @@ else
 	S="${WORKDIR}/${PN}-v-${PV}"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
-ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12"
+ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10"
 inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
@@ -28,7 +28,7 @@ SLOT="0/${PV}"
 IUSE="pluto onlyreco"
 
 DEPEND="
-	>=dev-util/cmake-3.9.4
+	dev-util/cmake
 	sci-libs/gsl
 	dev-cpp/gtest:=
 	dev-libs/icu
@@ -57,8 +57,7 @@ RDEPEND="${DEPEND}"
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
 PATCHES=(
-	"${FILESDIR}/${PN}-17.10a-libpythia.patch"
-	"${FILESDIR}/${PN}-17.10a-FairSoft.patch"
+	"${FILESDIR}/${PN}-16.06b-libpythia.patch"
 	)
 
 src_prepare() {

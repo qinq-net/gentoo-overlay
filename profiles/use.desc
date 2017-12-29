@@ -1,5 +1,7 @@
 root_target_root5_34 - Build for ROOT 5.34
 root_target_root6_04 - Build for ROOT 6.04
+root_target_root6_05 - Build for ROOT 6.05
+root_target_root6_06 - Build for ROOT 6.06
 root_target_root6_08 - Build for ROOT 6.08
 root_target_root6_10 - Build for ROOT 6.10
 root_target_root6_11 - Build for ROOT 6.11

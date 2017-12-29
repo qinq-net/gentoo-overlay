@@ -103,6 +103,14 @@ RDEPEND="${CDEPEND}
 	xinetd? ( sys-apps/xinetd )
 	app-eselect/eselect-root"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-5.28.00b-glibc212.patch
+	"${FILESDIR}"/${PN}-5.32.00-afs.patch
+	"${FILESDIR}"/${PN}-6.00.01-dotfont.patch
+	"${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
+	"${FILESDIR}"/${PN}-6.12.04-find-oracle-12.patch
+)
+
 pkg_setup() {
 	use fortran && fortran-2_pkg_setup
 	use python && python-single-r1_pkg_setup
@@ -122,14 +130,6 @@ pkg_setup() {
 
 src_prepare() {
 	cmake-utils_src_prepare
-
-	epatch \
-        "${FILESDIR}"/${PN}-5.28.00b-glibc212.patch \
-        "${FILESDIR}"/${PN}-5.32.00-afs.patch \
-        "${FILESDIR}"/${PN}-5.32.00-cfitsio.patch \
-        "${FILESDIR}"/${PN}-5.32.00-chklib64.patch \
-        "${FILESDIR}"/${PN}-6.00.01-dotfont.patch \
-		"${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
 
 	# make sure we use system libs and headers
 	rm montecarlo/eg/inc/cfortran.h README/cfortran.doc || die
@@ -253,13 +253,6 @@ src_configure() {
 		${EXTRA_ECONF}
 	)
 
-	if use oracle ; then
-			mycmakeargs+=(
-				-DORACLE_PATH_INCLUDES="${ORACLE_HOME}/include"
-				-DORACLE_PATH_LIB="${ORACLE_HOME}/$(get_libdir)"
-			)
-	fi
-
 	cmake-utils_src_configure
 }
 
@@ -281,19 +274,6 @@ daemon_install() {
 	fi
 }
 
-#desktop_install() {
-#	pushd "${S}" > /dev/null
-#	echo "Icon=root-system-bin" >> etc/root.desktop
-#	domenu etc/root.desktop
-#	doicon build/package/debian/root-system-bin.png
-#
-#	insinto /usr/share/icons/hicolor/48x48/mimetypes
-#	doins build/package/debian/application-x-root.png
-#
-#	insinto /usr/share/icons/hicolor/48x48/apps
-#	doicon build/package/debian/root-system-bin.xpm
-#}
-#
 src_install() {
 	cmake-utils_src_install
 
@@ -303,6 +283,7 @@ src_install() {
 	use emacs && elisp-install ${PN} "${BUILD_DIR}"/root-help.el
 
 	echo "PATH=${EPREFIX}/${MY_PREFIX}/bin" > 99root-${MY_PV} || die
+	echo "ROOTPATH=${EPREFIX}/${MY_PREFIX}/bin" >> 99root-${MY_PV} || die
 	echo "LDPATH=${EPREFIX}/${MY_PREFIX}/$(get_libdir)" >> 99root-${MY_PV} || die
 
 	if use pythia8; then
@@ -317,7 +298,6 @@ src_install() {
 	doenvd 99root-${MY_PV}
 
 	daemon_install
-	#desktop_install
 
 	pushd "${ED}" > /dev/null
 	rm -r ${MY_PREFIX}/{config,emacs,etc/vmc,fonts} || die
@@ -334,11 +314,3 @@ src_install() {
 	docompress -x "${MY_PREFIX}/README/CREDITS"
 	use examples && docompress -x "${MY_PREFIX}/tutorials"
 }
-
-#pkg_postinst() {
-#	xdg_desktop_database_update
-#}
-#
-#pkg_postrm() {
-#	xdg_desktop_database_update
-#}

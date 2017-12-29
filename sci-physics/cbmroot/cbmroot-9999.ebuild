@@ -17,12 +17,12 @@ else
 	KEYWORDS="~x86 ~amd64 ~x86-linux ~amd64-linux"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math"
-inherit subversion cmake-utils root
+ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10"
+inherit subversion cmake-utils fairroot
 
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="+fieldmaps pluto"
-REQUIRED_USE="!root_target_root6_11 !root_target_root6_12"
 
 DEPEND="
 	$(get_root_deps sci-physics/FairRoot -onlyreco)
@@ -37,28 +37,12 @@ RDEPEND="${DEPEND}"
 PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:12a
                       sci-physics/cbmroot-fieldmaps:12b
                       sci-physics/cbmroot-fieldmaps:16a )"
-
-src_prepare() {
-	epatch "${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
-	epatch "${FILESDIR}/${PN}-2017.07-boost.patch"
-	epatch "${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
-	epatch "${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
-	cmake-utils_src_prepare
-}
-
-_root_multibuild_wrapper() {
-	debug-print-function ${FUNCNAME} "${@}"
-	local rootpv=${MULTIBUILD_VARIANT##root}
-	rootpv=${rootpv//_/.}
-	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
-	export FAIRROOTPATH=${ROOT_DIR}
-	mycmakeargs+=(
-		-DROOT_DIR=${EPREFIX}/opt/root/${rootpv}
-		-DCMAKE_INSTALL_PREFIX=${EPREFIX}/opt/root/${rootpv}
-		-DGEANT3_PATH=${ROOT_DIR}
+PATCHES=(
+	"${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
+	"${FILESDIR}/${PN}-2017.07-boost.patch"
+	"${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
+	"${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
 	)
-	"${@}"
-}
 
 src_configure() {
 	export SIMPATH="${EPREFIX}/usr"
@@ -74,9 +58,15 @@ src_install() {
 	root_src_install
 	find ${D} -name 'check_system.sh' -delete
 	if use fieldmaps; then
-		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12a.root 
-		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12b.root 
-		ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v16a.root
+		local targets=( $(get_root_targets) )
+		for target in ${targets}; do
+			local rootpv=${target##root}
+			rootpv=${rootpv//_/.}
+			dodir /opt/root/${rootpv}/share/cbmroot/input
+			ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12a.root ${D}/opt/root/${rootpv}/share/cbmroot/input/
+			ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v12b.root ${D}/opt/root/${rootpv}/share/cbmroot/input/ 
+			ln -s ${EPREFIX}/usr/share/cbmroot/input/field_v16a.root ${D}/opt/root/${rootpv}/share/cbmroot/input/
+		done
 	fi
 }
 
