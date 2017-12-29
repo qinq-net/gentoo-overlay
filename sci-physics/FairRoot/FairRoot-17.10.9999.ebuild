@@ -46,7 +46,7 @@ DEPEND="
 		)
 		)
 	media-libs/mesa
-	net-libs/zeromq
+	net-libs/zeromq[static-libs]
 	dev-libs/protobuf
 	dev-libs/flatbuffers
 	dev-libs/msgpack
