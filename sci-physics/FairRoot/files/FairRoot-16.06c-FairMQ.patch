@@ -1,0 +1,41 @@
+diff -Naur FairRoot-v-16.06c.origin/examples/MQ/serialization/CMakeLists.txt FairRoot-v-16.06c/examples/MQ/serialization/CMakeLists.txt
+--- FairRoot-v-16.06c.origin/examples/MQ/serialization/CMakeLists.txt	2017-12-30 00:46:11.394197484 +0800
++++ FairRoot-v-16.06c/examples/MQ/serialization/CMakeLists.txt	2017-12-30 00:46:37.373197125 +0800
+@@ -180,37 +180,7 @@
+ # Alternative is to instantiate a TApplication or load manually with gSystem->Load("libTree.so") in main file
+ set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG )
+ 
+-if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+-    # use the LSB stuff if possible 
+-    EXECUTE_PROCESS(
+-       COMMAND cat /etc/lsb-release
+-       COMMAND grep DISTRIB_ID
+-       COMMAND awk -F= "{ print $2 }"
+-       COMMAND tr "\n" " "
+-       COMMAND sed "s/ //"
+-       OUTPUT_VARIABLE LSB_ID
+-       RESULT_VARIABLE LSB_ID_RESULT
+-    )
+-    EXECUTE_PROCESS(
+-       COMMAND cat /etc/lsb-release
+-       COMMAND grep DISTRIB_RELEASE
+-       COMMAND awk -F= "{ print $2 }"
+-       COMMAND tr "\n" " "
+-       COMMAND sed "s/ //"
+-       OUTPUT_VARIABLE LSB_VER
+-       RESULT_VARIABLE LSB_VER_RESULT
+-    )
+-    
+-    if(NOT ${LSB_ID} STREQUAL "")
+-        # found some, use it :D
+-        set(INSTALLER_PLATFORM "${LSB_ID}-${LSB_VER}" CACHE PATH "Installer chosen platform")
+-        if(${LSB_ID} STREQUAL "Ubuntu" AND ${LSB_VER} VERSION_GREATER "10.0")
+-            set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG "-Wl,--no-as-needed")
+-        endif()
+-    else(NOT ${LSB_ID} STREQUAL "")
+        set(INSTALLER_PLATFORM "linux-generic" CACHE PATH "Installer chosen platform")
+-    endif(NOT ${LSB_ID} STREQUAL "")
+-endif(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+ ############################################################
+ 
+ 

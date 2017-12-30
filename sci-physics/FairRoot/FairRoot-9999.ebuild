@@ -25,14 +25,17 @@ inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
-IUSE="pluto onlyreco"
+IUSE="pluto +fairmq onlyreco"
 
 DEPEND="
 	>=dev-util/cmake-3.9.4
 	sci-libs/gsl
 	dev-cpp/gtest:=
 	dev-libs/icu
-	dev-libs/boost:=
+	fairmq? (
+		>=dev-libs/boost-1.63:=
+		net-libs/zeromq[static-libs]
+		)
 	!onlyreco? (
 		sci-physics/hepmc
 		dev-libs/xerces-c
@@ -43,27 +46,31 @@ DEPEND="
 			)
 		|| (
 			$(get_root_deps sci-physics/geant-vmc:3)
-		)
+			)
 		)
 	media-libs/mesa
-	net-libs/zeromq[static-libs]
 	dev-libs/protobuf
-	dev-libs/flatbuffers
-	dev-libs/msgpack
-	dev-libs/nanomsg"
+	dev-libs/flatbuffers[static-libs]"
 RDEPEND="${DEPEND}"
 ## TODO: add support for the following dependencies
 #	sci-physics/geant-vmc:4
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
+#	dev-libs/msgpack[c]
+#	dev-libs/nanomsg[static-libs]
+#	IWYU
+#	DDS
+#	CUDA
 PATCHES=(
 	"${FILESDIR}/${PN}-17.10a-libpythia.patch"
 	"${FILESDIR}/${PN}-17.10a-FairSoft.patch"
+	"${FILESDIR}/${PN}-17.10b-FairMQ.patch"
+	"${FILESDIR}/${PN}-17.10b-GSL.patch"
 	)
 
 src_prepare() {
 	cmake-utils_src_prepare
-	elog "Swapping libdir"
+	einfo "Swapping libdir"
 	sed -i "s/\${SIMPATH}\/lib/\${SIMPATH}\/$(get_libdir)/g" `find ${S}/cmake -name '*.cmake'`
 }
 src_configure() {

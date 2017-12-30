@@ -1,0 +1,19 @@
+diff -Naur FairRoot-v-16.06c.origin/CMakeLists.txt FairRoot-v-16.06c/CMakeLists.txt
+--- FairRoot-v-16.06c.origin/CMakeLists.txt	2017-12-30 13:59:21.690344884 +0800
++++ FairRoot-v-16.06c/CMakeLists.txt	2017-12-30 13:59:51.742344469 +0800
+@@ -188,7 +188,6 @@
+ find_package(FlatBuffers)
+ find_package(DDS)
+ find_package(Go)
+-find_package(GSL)
+ 
+ If(WITH_DBASE)
+   find_package(MYSQL)
+@@ -203,6 +202,7 @@
+   set(BOOST_ROOT ${SIMPATH}/basics/boost)
+   set(GSL_DIR ${SIMPATH}/basics/gsl)
+ EndIf(FAIRSOFT_EXTERN)
++find_package(GSL)
+ 
+ Set(Boost_NO_SYSTEM_PATHS TRUE)
+ Set(Boost_NO_BOOST_CMAKE TRUE)

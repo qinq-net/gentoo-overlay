@@ -1,0 +1,53 @@
+diff -Naur FairRoot-v-17.10b.origin/CMakeLists.txt FairRoot-v-17.10b/CMakeLists.txt
+--- FairRoot-v-17.10b.origin/CMakeLists.txt	2017-12-30 12:48:16.697598370 +0800
++++ FairRoot-v-17.10b/CMakeLists.txt	2017-12-30 12:50:00.908596929 +0800
+@@ -275,7 +275,7 @@
+ # for boost.
+ Unset(Boost_INCLUDE_DIR CACHE)
+ Unset(Boost_LIBRARY_DIRS CACHE)
+-find_package(Boost 1.64 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time)
++find_package(Boost 1.63 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time)
+ If (Boost_FOUND)
+   Set(Boost_Avail 1)
+   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
+diff -Naur FairRoot-v-17.10b.origin/examples/MQ/serialization/CMakeLists.txt FairRoot-v-17.10b/examples/MQ/serialization/CMakeLists.txt
+--- FairRoot-v-17.10b.origin/examples/MQ/serialization/CMakeLists.txt	2017-12-30 12:48:16.704598370 +0800
++++ FairRoot-v-17.10b/examples/MQ/serialization/CMakeLists.txt	2017-12-30 12:49:01.868597745 +0800
+@@ -149,37 +149,7 @@
+ # Alternative is to instantiate a TApplication or load manually with gSystem->Load("libTree.so") in main file
+ set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG )
+ 
+-if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+-    # use the LSB stuff if possible
+-    EXECUTE_PROCESS(
+-       COMMAND cat /etc/lsb-release
+-       COMMAND grep DISTRIB_ID
+-       COMMAND awk -F= "{ print $2 }"
+-       COMMAND tr "\n" " "
+-       COMMAND sed "s/ //"
+-       OUTPUT_VARIABLE LSB_ID
+-       RESULT_VARIABLE LSB_ID_RESULT
+-    )
+-    EXECUTE_PROCESS(
+-       COMMAND cat /etc/lsb-release
+-       COMMAND grep DISTRIB_RELEASE
+-       COMMAND awk -F= "{ print $2 }"
+-       COMMAND tr "\n" " "
+-       COMMAND sed "s/ //"
+-       OUTPUT_VARIABLE LSB_VER
+-       RESULT_VARIABLE LSB_VER_RESULT
+-    )
+-
+-    if(NOT ${LSB_ID} STREQUAL "")
+-        # found some, use it :D
+-        set(INSTALLER_PLATFORM "${LSB_ID}-${LSB_VER}" CACHE PATH "Installer chosen platform")
+-        if(${LSB_ID} STREQUAL "Ubuntu" AND ${LSB_VER} VERSION_GREATER "10.0")
+-            set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG "-Wl,--no-as-needed")
+-        endif()
+-    else(NOT ${LSB_ID} STREQUAL "")
+        set(INSTALLER_PLATFORM "linux-generic" CACHE PATH "Installer chosen platform")
+-    endif(NOT ${LSB_ID} STREQUAL "")
+-endif(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+ ############################################################
+ 
+ List(LENGTH Exe_Names _length)

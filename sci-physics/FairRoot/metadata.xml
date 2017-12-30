@@ -19,6 +19,7 @@
 	</longdescription>
 	<use>
 		<flag name="pluto">Pull in support for sci-physics/pluto (TODO)</flag>
+		<flag name="fairmq">Pull in support for dev-libs/zeromq, also requires dev-libs/boost</flag>
 		<flag name="onlyreco">Only depend on a minimal set of FairSoft</flag>
 	</use>
 </pkgmetadata>

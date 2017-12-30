@@ -1,0 +1,33 @@
+diff -Naur FairRoot-v-17.10b.origin/CMakeLists.txt FairRoot-v-17.10b/CMakeLists.txt
+--- FairRoot-v-17.10b.origin/CMakeLists.txt	2017-12-30 12:52:58.714594470 +0800
++++ FairRoot-v-17.10b/CMakeLists.txt	2017-12-30 12:53:47.108593801 +0800
+@@ -242,6 +242,14 @@
+ if(NOT DISABLE_GO)
+   find_package(Go 1.7)
+ endif()
++
++If(FAIRSOFT_EXTERN)
++  set(BOOST_ROOT ${SIMPATH})
++  set(GSL_DIR ${SIMPATH})
++Else(FAIRSOFT_EXTERN)
++  set(BOOST_ROOT ${SIMPATH}/basics/boost)
++  set(GSL_DIR ${SIMPATH}/basics/gsl)
++EndIf(FAIRSOFT_EXTERN)
+ find_package(GSL)
+ if(NOT DEFINED GTEST_ROOT)
+   set(GTEST_ROOT ${SIMPATH})
+@@ -255,14 +263,6 @@
+   find_package(SQLITE)
+ EndIf(WITH_DBASE)
+ 
+-If(FAIRSOFT_EXTERN)
+-  set(BOOST_ROOT ${SIMPATH})
+-  set(GSL_DIR ${SIMPATH})
+-Else(FAIRSOFT_EXTERN)
+-  set(BOOST_ROOT ${SIMPATH}/basics/boost)
+-  set(GSL_DIR ${SIMPATH}/basics/gsl)
+-EndIf(FAIRSOFT_EXTERN)
+-
+ if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+   Set(Boost_NO_SYSTEM_PATHS TRUE)
+ endif()
