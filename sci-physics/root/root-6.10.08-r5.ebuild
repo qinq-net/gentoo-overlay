@@ -100,8 +100,7 @@ DEPEND="${CDEPEND}
 	virtual/pkgconfig"
 
 RDEPEND="${CDEPEND}
-	xinetd? ( sys-apps/xinetd )
-	app-eselect/eselect-root"
+	xinetd? ( sys-apps/xinetd )"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-5.28.00b-glibc212.patch

@@ -100,8 +100,7 @@ DEPEND="${CDEPEND}
 	virtual/pkgconfig"
 
 RDEPEND="${CDEPEND}
-	xinetd? ( sys-apps/xinetd )
-	app-eselect/eselect-root"
+	xinetd? ( sys-apps/xinetd )"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
