@@ -1,0 +1,15 @@
+diff -Naur cbmroot-201707.origin/mvd/CMakeLists.txt cbmroot-201707/mvd/CMakeLists.txt
+--- cbmroot-201707.origin/mvd/CMakeLists.txt	2017-10-21 17:36:18.593857476 +0800
++++ cbmroot-201707/mvd/CMakeLists.txt	2017-10-21 17:36:35.276446256 +0800
+@@ -43,10 +43,7 @@
+ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+ 
+ set(LINK_DIRECTORIES
+-${ROOT_LIBRARY_DIR}
+-${GSL_LIBRARY_DIRS}
+-${FAIRROOT_LIBRARY_DIR}
+-${CLHEP_LIBRARY_DIR}
++  ${ROOT_LIBRARY_DIR}
+ )
+ 
+ link_directories( ${LINK_DIRECTORIES})

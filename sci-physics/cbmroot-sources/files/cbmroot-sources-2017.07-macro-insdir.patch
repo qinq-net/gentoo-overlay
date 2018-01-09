@@ -1,0 +1,18 @@
+diff -Naur cbmroot-201707.origin/macro/run/CMakeLists.txt cbmroot-201707/macro/run/CMakeLists.txt
+--- cbmroot-201707.origin/macro/run/CMakeLists.txt	2017-10-22 02:21:31.259812905 +0800
++++ cbmroot-201707/macro/run/CMakeLists.txt	2017-10-22 02:24:15.499709033 +0800
+@@ -102,4 +102,4 @@
+         DESTINATION share/cbmroot/macro/run
+        )
+ Install(DIRECTORY modules DESTINATION share/cbmroot/macro/run)
+-Install(CODE "FILE(MAKE_DIRECTORY \${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/run/data)")
++Install(CODE "FILE(MAKE_DIRECTORY \$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/run/data)")
+diff -Naur cbmroot-201707.origin/macro/tof/CMakeLists.txt cbmroot-201707/macro/tof/CMakeLists.txt
+--- cbmroot-201707.origin/macro/tof/CMakeLists.txt	2017-10-22 02:21:31.298812631 +0800
++++ cbmroot-201707/macro/tof/CMakeLists.txt	2017-10-22 02:23:32.236990553 +0800
+@@ -44,4 +44,4 @@
+ Install(FILES qa/tof_qa_sim.C qa/tof_qa_ana.C qa/tof_qa_hp.C qa/tofDigiBdf.hst.root qa/tof.digibdf.par
+         DESTINATION share/cbmroot/macro/tof/qa
+        )
+-Install(CODE "FILE(MAKE_DIRECTORY \${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/tof/qa/data)")
++Install(CODE "FILE(MAKE_DIRECTORY \$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/share/cbmroot/macro/tof/qa/data)")

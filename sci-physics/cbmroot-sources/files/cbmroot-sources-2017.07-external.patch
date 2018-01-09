@@ -1,0 +1,10 @@
+diff -Naur cbmroot-201707.origin/external/CMakeLists.txt cbmroot-201707/external/CMakeLists.txt
+--- cbmroot-201707.origin/external/CMakeLists.txt	2017-10-21 15:45:55.113723627 +0800
++++ cbmroot-201707/external/CMakeLists.txt	2017-10-21 15:46:27.666743193 +0800
+@@ -25,5 +25,5 @@
+       ${CBMROOT_SOURCE_DIR}/external/vc/include/
+       PARENT_SCOPE
+      )
+-  Install(FILES $${CMAKE_BINARY_DIR}/lib/libVc.a DESTINATION lib)
++  Install(FILES ${CMAKE_BINARY_DIR}/lib/libVc.a DESTINATION lib)
+ EndIf()

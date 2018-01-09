@@ -18,14 +18,15 @@ else
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math"
 ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10"
-inherit subversion cmake-utils fairroot
+inherit cmake-utils fairroot
 
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="+fieldmaps pluto"
 
 DEPEND="
-	$(get_root_deps sci-physics/FairRoot -onlyreco)
+	sci-physics/cbmroot-sources:${PV}=
+	$(get_root_deps sci-physics/FairRoot:= "-onlyreco(-)")
 	dev-cpp/gtest:=
 	dev-libs/boost:=
 	net-libs/zeromq:=
@@ -37,12 +38,20 @@ RDEPEND="${DEPEND}"
 PDEPEND="fieldmaps? ( sci-physics/cbmroot-fieldmaps:12a
                       sci-physics/cbmroot-fieldmaps:12b
                       sci-physics/cbmroot-fieldmaps:16a )"
-PATCHES=(
-	"${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
-	"${FILESDIR}/${PN}-2017.07-boost.patch"
-	"${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
-	"${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
-	)
+
+CMAKE_USE_DIR="${EPREFIX}/usr/src/${P}"
+SANDBOX_WRITE+=":${EPREFIX}/usr/src/${P}/external"
+SANDBOX_WRITE+=":${EPREFIX}/usr/src/${P}/KF/KFParticle"
+SANDBOX_WRITE+=":${EPREFIX}/usr/src/${P}/KF/KFParticlePerformance"
+
+src_unpack() {
+	default
+	mkdir -pv "${S}"
+}
+
+src_prepare() {
+	default
+}
 
 src_configure() {
 	export SIMPATH="${EPREFIX}/usr"

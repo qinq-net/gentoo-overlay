@@ -1,0 +1,269 @@
+diff -Naur cbmroot-9999.origin/analysis/CMakeLists.txt cbmroot-9999/analysis/CMakeLists.txt
+--- cbmroot-9999.origin/analysis/CMakeLists.txt	2017-10-24 00:09:07.446385484 +0800
++++ cbmroot-9999/analysis/CMakeLists.txt	2017-10-24 00:27:53.169250178 +0800
+@@ -13,3 +13,6 @@
+ #add_subdirectory (photon)
+ #add_subdirectory (timing)
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/base/CMakeLists.txt cbmroot-9999/base/CMakeLists.txt
+--- cbmroot-9999.origin/base/CMakeLists.txt	2017-10-24 00:09:07.449385472 +0800
++++ cbmroot-9999/base/CMakeLists.txt	2017-10-24 00:27:26.838342413 +0800
+@@ -105,3 +105,6 @@
+ # Install file which has no corresponding source file 
+ Install(FILES CbmDefs.h DESTINATION include)
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/beamtime/CMakeLists.txt cbmroot-9999/beamtime/CMakeLists.txt
+--- cbmroot-9999.origin/beamtime/CMakeLists.txt	2017-10-24 00:09:07.450385467 +0800
++++ cbmroot-9999/beamtime/CMakeLists.txt	2017-10-24 00:28:23.538143907 +0800
+@@ -116,3 +116,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/data/CMakeLists.txt cbmroot-9999/data/CMakeLists.txt
+--- cbmroot-9999.origin/data/CMakeLists.txt	2017-10-24 00:09:07.453385455 +0800
++++ cbmroot-9999/data/CMakeLists.txt	2017-10-24 00:28:46.863062361 +0800
+@@ -147,4 +147,6 @@
+ 
+ GENERATE_LIBRARY()
+ 
+-
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/dilept/CMakeLists.txt cbmroot-9999/dilept/CMakeLists.txt
+--- cbmroot-9999.origin/dilept/CMakeLists.txt	2017-10-24 00:09:07.149386680 +0800
++++ cbmroot-9999/dilept/CMakeLists.txt	2017-10-24 00:32:01.584804838 +0800
+@@ -54,3 +54,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/doxygen/CMakeLists.txt cbmroot-9999/doxygen/CMakeLists.txt
+--- cbmroot-9999.origin/doxygen/CMakeLists.txt	2017-10-24 00:09:07.453385455 +0800
++++ cbmroot-9999/doxygen/CMakeLists.txt	2017-10-24 00:34:14.407001286 +0800
+@@ -45,3 +45,7 @@
+     ${CMAKE_CURRENT_BINARY_DIR}/doc_makeall.sh)
+ 
+ ENDIF (BUILD_DOXYGEN)
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/ecal/CMakeLists.txt cbmroot-9999/ecal/CMakeLists.txt
+--- cbmroot-9999.origin/ecal/CMakeLists.txt	2017-10-24 00:09:07.453385455 +0800
++++ cbmroot-9999/ecal/CMakeLists.txt	2017-10-24 00:34:26.664077365 +0800
+@@ -79,3 +79,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/eventbuilder/CMakeLists.txt cbmroot-9999/eventbuilder/CMakeLists.txt
+--- cbmroot-9999.origin/eventbuilder/CMakeLists.txt	2017-10-24 00:09:07.454385451 +0800
++++ cbmroot-9999/eventbuilder/CMakeLists.txt	2017-10-24 00:34:49.052987635 +0800
+@@ -95,3 +95,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/eventdisplay/CMakeLists.txt cbmroot-9999/eventdisplay/CMakeLists.txt
+--- cbmroot-9999.origin/eventdisplay/CMakeLists.txt	2017-10-24 00:09:07.454385451 +0800
++++ cbmroot-9999/eventdisplay/CMakeLists.txt	2017-10-24 00:35:05.753367494 +0800
+@@ -41,3 +41,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/field/CMakeLists.txt cbmroot-9999/field/CMakeLists.txt
+--- cbmroot-9999.origin/field/CMakeLists.txt	2017-10-24 00:09:07.455385447 +0800
++++ cbmroot-9999/field/CMakeLists.txt	2017-10-24 00:35:27.610117567 +0800
+@@ -46,3 +46,6 @@
+ 
+ GENERATE_LIBRARY()
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/fles/CMakeLists.txt cbmroot-9999/fles/CMakeLists.txt
+--- cbmroot-9999.origin/fles/CMakeLists.txt	2017-10-24 00:09:07.458385435 +0800
++++ cbmroot-9999/fles/CMakeLists.txt	2017-10-24 00:35:39.944078116 +0800
+@@ -13,3 +13,7 @@
+ Add_Subdirectory(star2017)
+ Add_Subdirectory(cosy2017)
+ Add_Subdirectory(cern2017)
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/generators/CMakeLists.txt cbmroot-9999/generators/CMakeLists.txt
+--- cbmroot-9999.origin/generators/CMakeLists.txt	2017-10-24 00:09:07.458385435 +0800
++++ cbmroot-9999/generators/CMakeLists.txt	2017-10-24 00:36:09.169279359 +0800
+@@ -66,3 +66,7 @@
+ Set(LIBRARY_NAME CbmGenerators)
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/global/CMakeLists.txt cbmroot-9999/global/CMakeLists.txt
+--- cbmroot-9999.origin/global/CMakeLists.txt	2017-10-24 00:09:07.465385407 +0800
++++ cbmroot-9999/global/CMakeLists.txt	2017-10-24 00:36:27.369599127 +0800
+@@ -59,3 +59,6 @@
+ 
+ GENERATE_LIBRARY()
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/hadron/CMakeLists.txt cbmroot-9999/hadron/CMakeLists.txt
+--- cbmroot-9999.origin/hadron/CMakeLists.txt	2017-10-24 00:09:07.465385407 +0800
++++ cbmroot-9999/hadron/CMakeLists.txt	2017-10-24 00:36:40.771546869 +0800
+@@ -54,3 +54,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/macro/CMakeLists.txt cbmroot-9999/macro/CMakeLists.txt
+--- cbmroot-9999.origin/macro/CMakeLists.txt	2017-10-24 00:09:07.512385218 +0800
++++ cbmroot-9999/macro/CMakeLists.txt	2017-10-24 00:37:30.169872725 +0800
+@@ -13,3 +13,7 @@
+ EndIf($ENV{ctest_model}  MATCHES Nightly)
+ 
+ add_subdirectory(beamtime)
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/much/CMakeLists.txt cbmroot-9999/much/CMakeLists.txt
+--- cbmroot-9999.origin/much/CMakeLists.txt	2017-10-24 00:09:07.152386668 +0800
++++ cbmroot-9999/much/CMakeLists.txt	2017-10-24 00:37:53.645365975 +0800
+@@ -88,3 +88,6 @@
+ 
+ GENERATE_LIBRARY()
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/mvd/CMakeLists.txt cbmroot-9999/mvd/CMakeLists.txt
+--- cbmroot-9999.origin/mvd/CMakeLists.txt	2017-10-24 00:09:07.153386664 +0800
++++ cbmroot-9999/mvd/CMakeLists.txt	2017-10-24 00:38:06.794179140 +0800
+@@ -119,3 +119,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/passive/CMakeLists.txt cbmroot-9999/passive/CMakeLists.txt
+--- cbmroot-9999.origin/passive/CMakeLists.txt	2017-10-24 00:09:07.442385500 +0800
++++ cbmroot-9999/passive/CMakeLists.txt	2017-10-24 00:38:21.915094337 +0800
+@@ -47,3 +47,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/psd/CMakeLists.txt cbmroot-9999/psd/CMakeLists.txt
+--- cbmroot-9999.origin/psd/CMakeLists.txt	2017-10-24 00:09:07.442385500 +0800
++++ cbmroot-9999/psd/CMakeLists.txt	2017-10-24 00:38:31.380656646 +0800
+@@ -50,3 +50,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/run/CMakeLists.txt cbmroot-9999/run/CMakeLists.txt
+--- cbmroot-9999.origin/run/CMakeLists.txt	2017-10-24 00:09:07.514385210 +0800
++++ cbmroot-9999/run/CMakeLists.txt	2017-10-24 00:39:43.919711814 +0800
+@@ -75,3 +75,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/sts/CMakeLists.txt cbmroot-9999/sts/CMakeLists.txt
+--- cbmroot-9999.origin/sts/CMakeLists.txt	2017-10-24 00:09:07.515385206 +0800
++++ cbmroot-9999/sts/CMakeLists.txt	2017-10-24 00:40:03.039710587 +0800
+@@ -144,3 +144,7 @@
+ link_directories( ${LINK_DIRECTORIES})
+ GENERATE_LIBRARY()
+ # ---------------------------------------------------------
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/tof/CMakeLists.txt cbmroot-9999/tof/CMakeLists.txt
+--- cbmroot-9999.origin/tof/CMakeLists.txt	2017-10-24 00:09:07.516385202 +0800
++++ cbmroot-9999/tof/CMakeLists.txt	2017-10-24 00:40:34.113276195 +0800
+@@ -102,3 +102,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/trd/CMakeLists.txt cbmroot-9999/trd/CMakeLists.txt
+--- cbmroot-9999.origin/trd/CMakeLists.txt	2017-10-24 00:09:07.519385190 +0800
++++ cbmroot-9999/trd/CMakeLists.txt	2017-10-24 00:40:54.563269399 +0800
+@@ -162,3 +162,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/trdcatrack/CMakeLists.txt cbmroot-9999/trdcatrack/CMakeLists.txt
+--- cbmroot-9999.origin/trdcatrack/CMakeLists.txt	2017-10-24 00:09:07.519385190 +0800
++++ cbmroot-9999/trdcatrack/CMakeLists.txt	2017-10-24 00:41:09.861993977 +0800
+@@ -50,3 +50,6 @@
+ 
+ GENERATE_LIBRARY()
+ 
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")
+diff -Naur cbmroot-9999.origin/vis/CMakeLists.txt cbmroot-9999/vis/CMakeLists.txt
+--- cbmroot-9999.origin/vis/CMakeLists.txt	2017-10-24 00:09:07.520385186 +0800
++++ cbmroot-9999/vis/CMakeLists.txt	2017-10-24 00:41:37.719274411 +0800
+@@ -55,3 +55,7 @@
+ )
+ 
+ GENERATE_LIBRARY()
++
++INSTALL ( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
++    DESTINATION include
++    FILES_MATCHING PATTERN "*.h*")

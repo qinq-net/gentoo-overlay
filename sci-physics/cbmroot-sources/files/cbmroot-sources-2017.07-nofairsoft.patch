@@ -1,0 +1,77 @@
+diff -Naur cbmroot-201707.origin/CMakeLists.txt cbmroot-201707/CMakeLists.txt
+--- cbmroot-201707.origin/CMakeLists.txt	2017-10-21 11:57:59.600797054 +0800
++++ cbmroot-201707/CMakeLists.txt	2017-10-21 11:59:54.700953959 +0800
+@@ -72,21 +72,6 @@
+   Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such an compiler.")
+ EndIf()
+ 
+-Execute_process(COMMAND $ENV{SIMPATH}/bin/fairsoft-config --cxxflags OUTPUT_VARIABLE _res_fairsoft_config OUTPUT_STRIP_TRAILING_WHITESPACE)
+-String(FIND ${_res_fairsoft_config} "-std=c++11" POS_C++11)
+-If(${POS_C++11} EQUAL -1) 
+-  Message(FATAL_ERROR "FairSoft wasn't compiled with c++11 support. Please recompile FairSoft with a compiler which supports c++11.")
+-EndIf()
+-
+-Execute_process(COMMAND $ENV{SIMPATH}/bin/fairsoft-config --root-version OUTPUT_VARIABLE _res_root_version OUTPUT_STRIP_TRAILING_WHITESPACE)
+-String(FIND ${_res_root_version} "Usage" POS_USAGE)
+-If(${POS_USAGE} EQUAL 1) 
+-  Message(FATAL_ERROR "FairSoft version to old. At least nov15 compiled with ROOT6 is needed.")
+-EndIf()
+-If(NOT ${_res_root_version} EQUAL 6)
+-  Message(FATAL_ERROR "FairSoft was not compiled with ROOT6. At least FairSoft nov15 compiled with ROOT6 is needed.")
+-EndIf()
+-
+ # Extract the FairRoot version from fairroot-config
+ # The version info is of the form Major.Minor.Patch e.g. 15.11.1 and
+ # is stored in the variable FairRoot_VERSION
+@@ -98,17 +83,10 @@
+   Message(FATAL_ERROR "\n CbmRoot needs at least FairRoot version v-15.11 (15.11.0).\n You use FairRoot ${FairRoot_VERSION}. Please upgrade your FairRoot version.") 
+ EndIf()
+ 
+-Execute_process(COMMAND $ENV{FAIRROOTPATH}/bin/fairroot-config --fairsoft_path OUTPUT_VARIABLE _simpath OUTPUT_STRIP_TRAILING_WHITESPACE)
+ Remove_Trailing_Slash($ENV{SIMPATH})
+ Set(_simpath ${_ret_val})
+ Remove_Trailing_Slash(${_simpath})
+ Set(_fairroot_config ${_ret_val})
+-String(COMPARE EQUAL ${_simpath} ${_fairroot_config}  _same_fairsoft)
+-If(NOT _same_fairsoft)
+-    Message(STATUS "FairSoft version used for FairRoot compilation: ${_fairroot_config}")
+-    Message(STATUS "FairSoft version now (defined by SIMPATH): ${_simpath}")
+-    Message(FATAL_ERROR "Both versions must be the same.")
+-EndIf()
+ 
+ 
+ #Check the compiler and set the compile and link flags
+diff -Naur cbmroot-201707.origin/macro/littrack/CMakeLists.txt cbmroot-201707/macro/littrack/CMakeLists.txt
+--- cbmroot-201707.origin/macro/littrack/CMakeLists.txt	2017-10-21 11:57:59.566796896 +0800
++++ cbmroot-201707/macro/littrack/CMakeLists.txt	2017-10-21 12:01:13.793557442 +0800
+@@ -5,17 +5,7 @@
+ File(COPY ${CBMROOT_SOURCE_DIR}/macro/include/.rootrc DESTINATION ${CBMROOT_BINARY_DIR}/macro/littrack/commit_tests)
+ 
+ Set(MaxTestTime 420)
+-Execute_Process(COMMAND ${SIMPATH}/bin/fairsoft-config --root-version
+-                OUTPUT_VARIABLE _root_version
+-                OUTPUT_STRIP_TRAILING_WHITESPACE
+-               )
+-
+-# Longer test time when using ROOT6
+-If(_root_version EQUAL 6)
+-  Math(EXPR TestTime "${MaxTestTime}*120/100")
+-Else()
+-  Set(TestTime ${MaxTestTime})
+-EndIf()
++Math(EXPR TestTime "${MaxTestTime}*120/100")
+ 
+ # Define the different setups to be tested
+ List(APPEND  setup  electron  muon)
+diff -Naur cbmroot-201707.origin/macro/mvd/ana_radlength_mvd.C cbmroot-201707/macro/mvd/ana_radlength_mvd.C
+--- cbmroot-201707.origin/macro/mvd/ana_radlength_mvd.C	2017-10-21 11:57:59.568796905 +0800
++++ cbmroot-201707/macro/mvd/ana_radlength_mvd.C	2017-10-21 12:04:36.338719267 +0800
+@@ -13,7 +13,7 @@
+ #include "TROOT.h"
+ #include "TProfile2D.h"
+ 
+-#include "/cvmfs/fairroot.gsi.de/fairroot/v-15.03a_fairsoft-mar15p2/include/FairRadLenPoint.h"
++#include <FairRadLenPoint.h>
+ 
+ #include <iostream>
+ #include <vector>
