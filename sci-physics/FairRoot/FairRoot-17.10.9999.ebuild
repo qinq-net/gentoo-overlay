@@ -25,7 +25,7 @@ inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
-IUSE="pluto +fairmq onlyreco"
+IUSE="pluto +fairmq onlyreco go"
 
 DEPEND="
 	>=dev-util/cmake-3.9.4
@@ -80,6 +80,7 @@ src_configure() {
 		-DBOOST_ROOT="${EPREFIX}/usr"
 		-DBOOST_INCLUDEDIR="${EPREFIX}/usr/include/boost"
 		-DBOOST_LIBRARYDIR="${EPREFIX}/usr/$(get_libdir)"
+		-DDISABLE_GO="$(usex go OFF ON)"
 		)
 	root_src_configure
 }
