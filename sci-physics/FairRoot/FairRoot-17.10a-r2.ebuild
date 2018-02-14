@@ -33,7 +33,7 @@ DEPEND="
 	dev-cpp/gtest:=
 	dev-libs/icu
 	fairmq? (
-		>=dev-libs/boost-1.63:=
+		>=dev-libs/boost-1.64:=
 		net-libs/zeromq[static-libs]
 		)
 	!onlyreco? (

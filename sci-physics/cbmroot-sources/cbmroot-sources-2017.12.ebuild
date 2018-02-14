@@ -24,9 +24,8 @@ SLOT="${PV}/${PR}"
 PATCHES=(
 	"${FILESDIR}/${PN}-2017.07-nofairsoft.patch"
 	"${FILESDIR}/${PN}-2017.07-boost.patch"
-	"${FILESDIR}/${PN}-2017.07-macro-insdir.patch"
+	"${FILESDIR}/${PN}-2017.12-macro-insdir.patch"
 	"${FILESDIR}/${PN}-2017.07-mvd-rpath.patch"
-	"${FILESDIR}/${PN}-2017.07-version.patch"
 	)
 
 src_configure() {
