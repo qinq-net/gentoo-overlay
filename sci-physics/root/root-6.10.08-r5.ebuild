@@ -26,7 +26,7 @@ MY_PREFIX=opt/${MY_P}
 
 SLOT="${MY_PV}/$(get_version_component_range 3 ${PV})"
 LICENSE="LGPL-2.1 freedist MSttfEULA LGPL-3 libpng UoI-NCSA"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 
 REQUIRED_USE="
 	!X? ( !asimage !opengl !qt4 !tiff )

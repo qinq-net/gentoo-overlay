@@ -4,6 +4,8 @@
 EAPI=6
 
 CMAKE_BUILD_TYPE=Release
+# ninja does not work due to fortran
+CMAKE_MAKEFILE_GENERATOR=emake
 FORTRAN_NEEDED="fortran"
 PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
 
@@ -14,7 +16,7 @@ DESCRIPTION="C++ data analysis framework and interpreter from CERN"
 HOMEPAGE="https://root.cern"
 SRC_URI="https://root.cern/download/${PN}_v${PV}.source.tar.gz"
 
-IUSE="+X avahi aqua +asimage davix emacs +examples fits fftw fortran +gdml
+IUSE="+X avahi aqua +asimage +davix emacs +examples fits fftw fortran +gdml
 	graphviz +gsl http jemalloc kerberos ldap libcxx +math memstat +minuit
 	mysql odbc +opengl oracle postgres prefix pythia6 pythia8 +python qt4
 	R +roofit root7 shadow sqlite ssl table +tbb test +threads +tiff +tmva
@@ -40,6 +42,7 @@ CDEPEND="
 	app-arch/xz-utils
 	fortran? ( dev-lang/cfortran )
 	dev-libs/libpcre:3=
+	dev-libs/xxhash
 	media-fonts/dejavu
 	media-libs/freetype:2=
 	media-libs/libpng:0=
@@ -68,6 +71,7 @@ CDEPEND="
 		>=x11-wm/afterstep-2.2.11[gif,jpeg,png,tiff?]
 	) )
 	avahi? ( net-dns/avahi[mdnsresponder-compat] )
+	davix? ( net-libs/davix )
 	fftw? ( sci-libs/fftw:3.0= )
 	fits? ( sci-libs/cfitsio:0= )
 	graphviz? ( media-gfx/graphviz:0= )
@@ -103,8 +107,15 @@ RDEPEND="${CDEPEND}
 	xinetd? ( sys-apps/xinetd )"
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
-	"${FILESDIR}"/${PN}-6.12.04-find-oracle-12.patch
+	"${FILESDIR}"/${PN}-5.28.00b-glibc212.patch
+	"${FILESDIR}"/${PN}-5.32.00-afs.patch
+	"${FILESDIR}"/${PN}-5.32.00-cfitsio.patch
+	"${FILESDIR}"/${PN}-5.32.00-chklib64.patch
+	"${FILESDIR}"/${PN}-6.00.01-dotfont.patch
+	"${FILESDIR}"/${PN}-6.11.02-hsimple.patch
+	"${FILESDIR}"/${PN}-6.12.04-no-ocaml.patch
+	"${FILESDIR}"/${PN}-6.12.04-z3.patch
+	"${FILESDIR}"/${PN}-6.12.06-disable-ftgl.patch
 )
 
 pkg_setup() {
@@ -141,6 +152,8 @@ src_prepare() {
 
 	# CSS should use local images
 	sed -i -e 's,http://.*/,,' etc/html/ROOT.css || die "html sed failed"
+
+	hprefixify build/CMakeLists.txt core/clingutils/CMakeLists.txt
 }
 
 # Note: ROOT uses bundled LLVM, because it is patched and API-incompatible with system LLVM.
@@ -152,26 +165,29 @@ src_configure() {
 		-DCMAKE_C_FLAGS="${CFLAGS}"
 		-DCMAKE_CXX_FLAGS="${CXXFLAGS}"
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/${MY_PREFIX}"
+		-DDEFAULT_SYSROOT="${EPREFIX}" # for llvm system headers
+		-DCMAKE_INSTALL_MANDIR="${EPREFIX}/${MY_PREFIX}/share/man"
 		-Dexplicitlink=ON
 		-Dexceptions=ON
 		-Dfail-on-missing=ON
 		-Dshared=ON
-		-Dsoversion=ON
 		-Dbuiltin_llvm=ON
 		-Dbuiltin_afterimage=OFF
 		-Dbuiltin_cfitsio=OFF
-		-Dbuiltin_davix=$(usex davix) # not in Gentoo yet
+		-Dbuiltin_davix=OFF
 		-Dbuiltin_fftw3=OFF
 		-Dbuiltin_freetype=OFF
 		-Dbuiltin_ftgl=OFF
 		-Dbuiltin_glew=OFF
 		-Dbuiltin_gsl=OFF
+		-Dbuiltin_lz4=OFF
 		-Dbuiltin_lzma=OFF
 		-Dbuiltin_pcre=OFF
 		-Dbuiltin_tbb=OFF
 		-Dbuiltin_unuran=OFF
 		-Dbuiltin_vc=OFF
 		-Dbuiltin_xrootd=OFF
+		-Dbuiltin_xxhash=OFF
 		-Dbuiltin_zlib=OFF
 		-Dx11=$(usex X)
 		-Dxft=$(usex X)
@@ -232,6 +248,7 @@ src_configure() {
 		-Drpath=$(usex prefix) # default OFF
 		-Dsapdb=OFF # default ON
 		-Dshadowpw=$(usex shadow) # default ON
+		-Dsoversion=ON
 		-Dsqlite=$(usex sqlite) # default ON
 		-Dsrp=OFF # default ON (unimplemented option)
 		-Dssl=$(usex ssl) # default ON
@@ -258,15 +275,18 @@ daemon_install() {
 	fowners rootd:rootd /var/spool/rootd
 	dodir /var/spool/rootd/{pub,tmp}
 	fperms 1777 /var/spool/rootd/{pub,tmp}
+	keepdir /var/spool/rootd/{pub,tmp}
 
 	local i
 	for i in ${daemons}; do
-		newinitd "${FILESDIR}"/${i}.initd ${i}
-		newconfd "${FILESDIR}"/${i}.confd ${i}
+		newinitd "${FILESDIR}"/${i}.initd ${i}-${MY_PV}
+		newconfd "${FILESDIR}"/${i}.confd ${i}-${MY_PV}
 	done
 	if use xinetd; then
 		insinto /etc/xinetd
 		doins "${BUILD_DIR}"/etc/daemons/{rootd,proofd}.xinetd
+		mv ${ED}/etc/xinetd/rootd{,-${MY_PV}}.xinetd
+		mv ${ED}/etc/xinetd/proofd{,-${MY_PV}}.xinetd
 	fi
 }
 
