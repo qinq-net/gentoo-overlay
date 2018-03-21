@@ -16,7 +16,7 @@ if [[ ${PV} == *"9999" ]] ; then
 	fi
 else
 	SRC_URI="https://github.com/FairRootGroup/FairRoot/archive/v-${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="amd64 x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${PN}-v-${PV}"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
