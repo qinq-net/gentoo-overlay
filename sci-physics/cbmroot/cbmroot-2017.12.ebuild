@@ -30,6 +30,7 @@ DEPEND="
 	dev-cpp/gtest:=
 	dev-libs/boost:=
 	net-libs/zeromq:=
+	sci-libs/gsl:=
 	pluto? (
 		sci-physics/pluto:=
 		$(get_root_deps sci-physics/FairRoot pluto)
@@ -59,6 +60,7 @@ src_configure() {
 		"-DBOOST_ROOT=${EPREFIX}/usr"
 		"-DBOOST_INCLUDEDIR=${EPREFIX}/usr/include/boost"
 		"-DBOOST_LIBRARYDIR=${EPREFIX}/usr/$(get_libdir)"
+		"-DGSL_DIR=${EPREFIX}/usr"
 		)
 	root_src_configure
 }
