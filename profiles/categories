@@ -4,6 +4,7 @@ app-eselect
 app-i18n
 app-vim
 dev-lang
+dev-tex
 media-fonts
 media-libs
 net-misc
