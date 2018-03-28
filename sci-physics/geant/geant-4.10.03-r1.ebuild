@@ -16,7 +16,8 @@ LICENSE="geant4"
 SLOT="4"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 IUSE="+data dawn doc examples gdml geant3 inventor motif opengl
-	raytracerx qt4 static-libs vrml zlib threads"
+	raytracerx -qt4 qt5 static-libs vrml zlib threads"
+REQUIRED_USE="?? ( qt4 qt5 )"
 
 RDEPEND="
 	dev-libs/expat
@@ -27,8 +28,16 @@ RDEPEND="
 	opengl? ( virtual/opengl )
 	inventor? ( media-libs/SoXt )
 	qt4? (
+		dev-qt/qtcore:4
 		dev-qt/qtgui:4
 		opengl? ( dev-qt/qtopengl:4 )
+	)
+	qt5? (
+		dev-qt/qtcore:5
+		dev-qt/qtgui:5
+		dev-qt/qtprintsupport:5
+		dev-qt/qtwidgets:5
+		opengl? ( dev-qt/qtopengl:5 )
 	)
 	raytracerx? (
 		x11-libs/libX11
@@ -53,6 +62,10 @@ src_prepare() {
 }
 
 src_configure() {
+	local _USE_QT=no
+	if use qt4; then _USE_QT=yes
+	elif use qt5; then _USE_QT=no
+	fi
 	local mycmakeargs=(
 		-DGEANT4_USE_SYSTEM_CLHEP=ON
 		-DGEANT4_INSTALL_DATA=OFF
@@ -63,7 +76,8 @@ src_configure() {
 		-DGEANT4_USE_XM=$(usex motif)
 		-DGEANT4_USE_OPENGL_X11=$(usex opengl)
 		-DGEANT4_USE_INVENTOR=$(usex inventor)
-		-DGEANT4_USE_QT=$(usex qt4)
+		-DGEANT4_USE_QT=${_USE_QT}
+		-DGEANT4_FORCE_QT4=$(usex qt4)
 		-DGEANT4_USE_RAYTRACER_X11=$(usex raytracerx)
 		-DGEANT4_USE_NETWORKVRML=$(usex vrml)
 		-DGEANT4_USE_SYSTEM_ZLIB=$(usex zlib)
