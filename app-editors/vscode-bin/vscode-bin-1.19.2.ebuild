@@ -20,8 +20,10 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64 -*"
 IUSE=""
 
-DEPEND=""
+DEPEND="
+	!app-editors/vscode"
 RDEPEND="
+	${DEPEND}
 	app-crypt/libsecret:0
 	dev-libs/atk:0
 	dev-libs/expat:0
