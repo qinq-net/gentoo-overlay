@@ -6,7 +6,7 @@ EAPI=6
 DESCRIPTION="Free Client for OneDrive on Linux"
 HOMEPAGE="https://skilion.github.io/onedrive/"
 inherit eutils git-r3
-EGIT_REPO_URI="https://github.com/skilion/onedrive"
+EGIT_REPO_URI="https://github.com/abraunegg/onedrive"
 #SRC_URI=""
 
 LICENSE="GPL-v3"
@@ -19,7 +19,4 @@ DEPEND="net-misc/curl[curl_ssl_openssl]
 		dev-lang/dmd"
 RDEPEND="${DEPEND}"
 
-src_prepare(){
-	default
-	sed -i -e "s&PREFIX = .*&PREFIX = ${EPREFIX}/usr&g" Makefile
-}
+MAKEOPTS+=" PREFIX=${EPREFIX}/usr"
