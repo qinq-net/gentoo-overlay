@@ -145,9 +145,9 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_C_FLAGS="${CFLAGS}"
 		-DCMAKE_CXX_FLAGS="${CXXFLAGS}"
-		-DCMAKE_INSTALL_PREFIX="${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)"
-		-DCMAKE_INSTALL_MANDIR="${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)/share/man"
-		-DMCAKE_INSTALL_LIBDIR=$(get_libdir)
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)"
+		-DCMAKE_INSTALL_MANDIR="${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)/share/man"
+		-DCMAKE_INSTALL_LIBDIR="lib"
 		-DDEFAULT_SYSROOT="${EPREFIX}"
 		-Dexplicitlink=ON
 		-Dexceptions=ON
@@ -268,23 +268,18 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	ROOTSYS=${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)
+	ROOTSYS=${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)
 	ROOTENV=$((9999 - $(ver_cut 2)))${PN}-$(ver_cut 1-2)
-
-	# ROOT fails without this symlink because it only looks in lib
-	if [[ ! -d ${D}/${ROOTSYS}/lib ]]; then
-		dosym $(get_libdir) /usr/$(get_libdir)/${PN}/$(ver_cut 1-2)/lib
-	fi
 
 	cat > ${ROOTENV} <<- EOF || die
 	MANPATH="${ROOTSYS}/share/man"
 	PATH="${ROOTSYS}/bin"
 	ROOTPATH="${ROOTSYS}/bin"
-	LDPATH="${ROOTSYS}/$(get_libdir)"
+	LDPATH="${ROOTSYS}/lib
 	EOF
 
 	if use python; then
-		echo "PYTHONPATH=${ROOTSYS}/$(get_libdir)" >> ${ROOTENV} || die
+		echo "PYTHONPATH=${ROOTSYS}/lib" >> ${ROOTENV} || die
 	fi
 
 	doenvd ${ROOTENV}
@@ -295,15 +290,11 @@ src_install() {
 		elisp-install ${PN}-$(ver_cut 1-2) "${BUILD_DIR}"/root-help.el
 	fi
 
-	if ! use gdml; then
-		rm -r geom || die
-	fi
-
 	if ! use examples; then
 		rm -r test tutorials || die
 	fi
 
-	if use tmva; then
+	if ! use tmva; then
 		rm -r tmva || die
 	fi
 

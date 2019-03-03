@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,19 +7,19 @@ CMAKE_BUILD_TYPE=Release
 # ninja does not work due to fortran
 CMAKE_MAKEFILE_GENERATOR=emake
 FORTRAN_NEEDED="fortran"
-PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
+PYTHON_COMPAT=( python2_7 python3_{4,5,6,7} )
 
-inherit cmake-utils eapi7-ver elisp-common eutils fortran-2 \
+inherit cmake-utils cuda eapi7-ver elisp-common eutils fortran-2 \
 	prefix python-single-r1 toolchain-funcs
 
 DESCRIPTION="C++ data analysis framework and interpreter from CERN"
 HOMEPAGE="https://root.cern"
 SRC_URI="https://root.cern/download/${PN}_v${PV}.source.tar.gz"
 
-IUSE="+X avahi aqua +asimage +davix emacs +examples fits fftw fortran
+IUSE="+X avahi aqua +asimage cuda +davix emacs +examples fits fftw fortran
 	+gdml graphviz +gsl http jemalloc kerberos ldap libcxx memstat
 	+minuit mysql odbc +opengl oracle postgres prefix pythia6 pythia8
-	+python qt4 R +roofit root7 shadow sqlite +ssl table +tbb test
+	+python qt5 R +roofit root7 shadow sqlite +ssl table +tbb test
 	+threads +tiff +tmva +unuran vc xinetd +xml xrootd"
 
 SLOT="$(ver_cut 1-2)/$(ver_cut 3)"
@@ -27,9 +27,10 @@ LICENSE="LGPL-2.1 freedist MSttfEULA LGPL-3 libpng UoI-NCSA"
 KEYWORDS="~amd64 ~x86"
 
 REQUIRED_USE="
-	!X? ( !asimage !opengl !qt4 !tiff )
+	!X? ( !asimage !opengl !qt5 !tiff )
 	davix? ( ssl xml )
 	python? ( ${PYTHON_REQUIRED_USE} )
+	qt5? ( root7 )
 	tmva? ( gsl )
 "
 
@@ -56,10 +57,10 @@ CDEPEND="
 			virtual/glu
 			x11-libs/gl2ps:0=
 		)
-		qt4? (
-			dev-qt/qtcore:4=
-			dev-qt/qtgui:4=
-			opengl? ( dev-qt/qtopengl:4= )
+		qt5? (
+			dev-qt/qtcore:5=
+			dev-qt/qtgui:5=
+			dev-qt/qtwebengine:5=
 		)
 	)
 	asimage? ( || (
@@ -67,6 +68,7 @@ CDEPEND="
 		>=x11-wm/afterstep-2.2.11[gif,jpeg,png,tiff?]
 	) )
 	avahi? ( net-dns/avahi[mdnsresponder-compat] )
+	cuda? ( >=dev-util/nvidia-cuda-toolkit-9.0 )
 	davix? ( net-libs/davix )
 	emacs? ( virtual/emacs )
 	fftw? ( sci-libs/fftw:3.0= )
@@ -105,7 +107,9 @@ RDEPEND="${CDEPEND}
 	xinetd? ( sys-apps/xinetd )"
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-6.10.08-ignore-hsimple.patch
+	"${FILESDIR}"/${PN}-6.12.04-no-ocaml.patch
+	"${FILESDIR}"/${PN}-6.12.06_cling-runtime-sysroot.patch
+	"${FILESDIR}"/${PN}-6.13.02-hsimple.patch
 )
 
 pkg_setup() {
@@ -140,16 +144,19 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_C_FLAGS="${CFLAGS}"
 		-DCMAKE_CXX_FLAGS="${CXXFLAGS}"
-		-DCMAKE_INSTALL_PREFIX="${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)"
-		-DCMAKE_INSTALL_MANDIR="${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)/share/man"
-		-DMCAKE_INSTALL_LIBDIR=$(get_libdir)
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)"
+		-DCMAKE_INSTALL_MANDIR="${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)/share/man"
+		-DCMAKE_INSTALL_LIBDIR="lib"
 		-DDEFAULT_SYSROOT="${EPREFIX}"
+		-DCLING_BUILD_PLUGINS=OFF
 		-Dexplicitlink=ON
 		-Dexceptions=ON
 		-Dfail-on-missing=ON
+		-Dgnuinstall=OFF
 		-Dshared=ON
 		-Dsoversion=ON
 		-Dbuiltin_llvm=ON
+		-Dbuiltin_clang=ON
 		-Dbuiltin_afterimage=OFF
 		-Dbuiltin_cfitsio=OFF
 		-Dbuiltin_davix=OFF
@@ -185,6 +192,7 @@ src_configure() {
 		-Dchirp=OFF
 		-Dcling=ON # cling=OFF is broken
 		-Dcocoa=$(usex aqua)
+		-Dcuda=$(usex cuda)
 		-Dcxx14=$(usex root7)
 		-Dcxxmodules=OFF # requires clang, unstable
 		-Ddavix=$(usex davix)
@@ -201,7 +209,6 @@ src_configure() {
 		-Dglite=OFF # not implemented
 		-Dglobus=OFF
 		-Dgminimal=OFF
-		-Dgnuinstall=OFF
 		-Dgsl_shared=$(usex gsl)
 		-Dgviz=$(usex graphviz)
 		-Dhdfs=OFF
@@ -225,14 +232,15 @@ src_configure() {
 		-Dpythia6=$(usex pythia6)
 		-Dpythia8=$(usex pythia8)
 		-Dpython=$(usex python)
-		-Dqt=$(usex qt4) # default Qt
-		-Dqtgsi=$(usex qt4) # default *
+		-Dqt5web=$(usex qt5)
+		-Dqtgsi=OFF
+		-Dqt=OFF
 		-Drfio=OFF
 		-Droofit=$(usex roofit)
 		-Droot7=$(usex root7)
 		-Drootbench=OFF
 		-Droottest=$(usex test)
-		-Drpath=ON # needed for multi-slot to work
+		-Drpath=OFF
 		-Druby=OFF # deprecated and broken
 		-Druntime_cxxmodules=OFF # does not work yet
 		-Dr=$(usex R)
@@ -247,6 +255,8 @@ src_configure() {
 		-Dtesting=$(usex test)
 		-Dthread=$(usex threads)
 		-Dtmva=$(usex tmva)
+		-Dtmva-cpu=$(usex tmva)
+		-Dtmva-gpu=$(usex cuda)
 		-Dunuran=$(usex unuran)
 		-Dvc=$(usex vc)
 		-Dvdt=OFF
@@ -262,23 +272,18 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	ROOTSYS=${EPREFIX%/}/usr/$(get_libdir)/${PN}/$(ver_cut 1-2)
+	ROOTSYS=${EPREFIX%/}/usr/lib/${PN}/$(ver_cut 1-2)
 	ROOTENV=$((9999 - $(ver_cut 2)))${PN}-$(ver_cut 1-2)
-
-	# ROOT fails without this symlink because it only looks in lib
-	if [[ ! -d ${D}/${ROOTSYS}/lib ]]; then
-		dosym $(get_libdir) /usr/$(get_libdir)/${PN}/$(ver_cut 1-2)/lib
-	fi
 
 	cat > ${ROOTENV} <<- EOF || die
 	MANPATH="${ROOTSYS}/share/man"
 	PATH="${ROOTSYS}/bin"
 	ROOTPATH="${ROOTSYS}/bin"
-	LDPATH="${ROOTSYS}/$(get_libdir)"
+	LDPATH="${ROOTSYS}/lib
 	EOF
 
 	if use python; then
-		echo "PYTHONPATH=${ROOTSYS}/$(get_libdir)" >> ${ROOTENV} || die
+		echo "PYTHONPATH=${ROOTSYS}/lib" >> ${ROOTENV} || die
 	fi
 
 	doenvd ${ROOTENV}
@@ -289,15 +294,11 @@ src_install() {
 		elisp-install ${PN}-$(ver_cut 1-2) "${BUILD_DIR}"/root-help.el
 	fi
 
-	if ! use gdml; then
-		rm -r geom || die
-	fi
-
 	if ! use examples; then
 		rm -r test tutorials || die
 	fi
 
-	if use tmva; then
+	if ! use tmva; then
 		rm -r tmva || die
 	fi
 
