@@ -15,11 +15,11 @@ EXPORT_FUNCTIONS src_configure src_compile src_test src_install
 if [[ "${ROOT_COMPAT}" != "" ]]; then
 	ROOT_TARGETS=${ROOT_COMPAT}
 else
-	ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13"
+	ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14"
 fi
 
 if [[ "${ROOT_REQUIRED_USE}" != "" ]]; then
-	ROOT_REQUIRED_USE="[${ROOT_REQUIRED_USE}]"
+	_ROOT_REQUIRED_USE="[${ROOT_REQUIRED_USE}]"
 fi
 for target in ${ROOT_TARGETS}; do
 	IUSE_ROOT_TARGETS+=" root_target_${target}"
@@ -38,7 +38,7 @@ make_root_deps() {
 	for target in ${ROOT_TARGETS}; do
 		local my_pv=${target##root}
 		my_pv=${my_pv//_/.}
-		echo "root_target_${target}? ( sci-physics/root:${my_pv}${ROOT_REQUIRED_USE} )"
+		echo "root_target_${target}? ( sci-physics/root:${my_pv}${_ROOT_REQUIRED_USE} )"
 	done
 }
 get_root_targets() {
@@ -75,10 +75,13 @@ _root_multibuild_wrapper() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local rootpv=${MULTIBUILD_VARIANT##root}
 	rootpv=${rootpv//_/.}
-	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
+	export ROOT_DIR="${EPREFIX}/usr/$(get_libdir)/root/${rootpv}"
+	echo $ROOT_DIR
+	export ROOTSYS="${ROOT_DIR}"
+	export PATH="${ROOT_DIR}/bin:${PATH}"
 	mycmakeargs+=(
-		-DROOT_DIR=${EPREFIX}/opt/root/${rootpv}
-		-DCMAKE_INSTALL_PREFIX=${EPREFIX}/opt/root/${rootpv}
+		-DROOT_DIR="${ROOT_DIR}"
+		-DCMAKE_INSTALL_PREFIX="${ROOT_DIR}"
 	)
 	"${@}"
 }

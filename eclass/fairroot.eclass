@@ -16,9 +16,10 @@ _root_multibuild_wrapper() {
 	export SIMPATH=${EPREFIX}/usr
 	local rootpv=${MULTIBUILD_VARIANT##root}
 	rootpv=${rootpv//_/.}
-	export ROOT_DIR="${EPREFIX}/opt/root/${rootpv}"
+	export ROOT_DIR="${EPREFIX}/usr/$(get_libdir)/root/${rootpv}"
 	export FAIRROOTPATH=${ROOT_DIR}
 	export ROOTSYS=${ROOT_DIR}
+	export PATH="${ROOT_DIR}/bin:${PATH}"
 	mycmakeargs+=(
 		-DROOT_DIR=${ROOT_DIR}
 		-DCMAKE_INSTALL_PREFIX=${ROOT_DIR}

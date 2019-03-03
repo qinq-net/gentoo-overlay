@@ -11,8 +11,9 @@ if [[ ${PV} == *9999* ]]; then
 	KEYWORDS=""
 else
 	MPV=$(get_version_component_range 2-)
+	MPV=${MPV/_/.}
 	SRC_URI="http://root.cern.ch/download/vmc/geant4_vmc.${MPV}.tar.gz"
-	S="${WORKDIR}/geant4_vmc-${MPV/./-}"
+	S="${WORKDIR}/geant4_vmc.${MPV}"
 	KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 fi
 
@@ -25,7 +26,6 @@ IUSE="doc +examples geant3 +g4root +mtroot +vgm test"
 
 RDEPEND="
 	>=sci-physics/geant-4.9.6[opengl,geant3?]
-	<sci-physics/geant-4.10.4
 	vgm? ( >=sci-physics/vgm-4.00 )"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )"

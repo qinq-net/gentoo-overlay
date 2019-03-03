@@ -1,0 +1,14 @@
+diff -Naur --strip-trailing-cr vgm.4.4.old/cmake/FindROOT.cmake vgm.4.4/cmake/FindROOT.cmake
+--- vgm.4.4.old/cmake/FindROOT.cmake	2017-02-06 22:38:34.000000000 +0800
++++ vgm.4.4/cmake/FindROOT.cmake	2019-03-03 13:48:54.250083373 +0800
+@@ -93,10 +93,6 @@
+ endif()    
+ 
+ if(ROOT_FOUND)
+-  # ROOT 6 requires C++11 support
+-  if (ROOT_FOUND_VERSION GREATER 59999)
+-     add_definitions(-std=c++11)
+-  endif()
+   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
+   if(NOT ROOT_FIND_QUIETLY)
+     message(STATUS "Found ROOT ${ROOT_VERSION} in ${ROOT_PREFIX}")

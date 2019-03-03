@@ -25,12 +25,12 @@ REQUIRED_USE="root"
 
 RDEPEND="
 	sci-physics/clhep:=
-	root? ( sci-physics/root:= )
 	geant4? ( >=sci-physics/geant-4.9.6 )
 	xml? ( dev-libs/xerces-c )"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen[dot] )
 	test? ( geant4? ( xml? ( >=sci-physics/geant-4.9.6[gdml] ) ) )"
+PATCHES="${FILESDIR}/vgm-4.4-FindROOT-no-cxx11.patch"
 
 src_configure() {
 	local mycmakeargs=(

@@ -4,13 +4,13 @@
 EAPI=6
 
 ROOT_REQUIRED_USE="pythia6"
-inherit git-r3 cmake-utils fortran-2 root
+inherit cmake-utils fortran-2 root
 DESCRIPTION="CERN's detector description and simulation Tool"
 HOMEPAGE="https://github.com/FairRootGroup/geant3"
-EGIT_REPO_URI="https://github.com/FairRootGroup/geant3"
-EGIT_BRANCH="v2.1"
+SRC_URI="https://root.cern.ch/download/vmc/geant3+_vmc.2.6.tar.gz"
+S="${WORKDIR}/geant3+_vmc.2.6"
 
-LICENSE="GPL-2 LGPL-2 BSD"
+LICENSE="GPL-2"
 SLOT="3"
 KEYWORDS="~amd64 ~x86"
 IUSE="examples"
