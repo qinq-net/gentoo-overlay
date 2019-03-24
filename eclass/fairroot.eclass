@@ -16,7 +16,7 @@ _root_multibuild_wrapper() {
 	export SIMPATH=${EPREFIX}/usr
 	local rootpv=${MULTIBUILD_VARIANT##root}
 	rootpv=${rootpv//_/.}
-	export ROOT_DIR="${EPREFIX}/usr/$(get_libdir)/root/${rootpv}"
+	export ROOT_DIR="${EPREFIX}/usr/lib/root/${rootpv}"
 	export FAIRROOTPATH=${ROOT_DIR}
 	export ROOTSYS=${ROOT_DIR}
 	export PATH="${ROOT_DIR}/bin:${PATH}"
