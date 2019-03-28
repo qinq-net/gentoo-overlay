@@ -1,0 +1,12 @@
+diff -Nur FairMQ-1.3.7.origin/fairmq/tools/Network.h FairMQ-1.3.7/fairmq/tools/Network.h
+--- FairMQ-1.3.7.origin/fairmq/tools/Network.h	2018-11-29 04:16:29.000000000 +0800
++++ FairMQ-1.3.7/fairmq/tools/Network.h	2019-03-28 20:29:50.061187597 +0800
+@@ -19,7 +19,7 @@
+ {
+ 
+ class io_context;
+-typedef class io_context io_service;
++class io_service;
+ 
+ } // namespace asio
+ } // namespace boost
