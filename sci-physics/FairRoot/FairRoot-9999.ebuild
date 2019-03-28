@@ -15,57 +15,58 @@ if [[ ${PV} == *"9999" ]] ; then
 		EGIT_BRANCH="v-${PV%%.9999}_patches"
 	fi
 else
-	SRC_URI="https://github.com/FairRootGroup/FairRoot/archive/v-${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${PN}-v-${PV}"
+	SRC_URI="https://github.com/FairRootGroup/FairRoot/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="" #TODO: wait for dev-libs/boost-1.67 to testing
+	#S="${WORKDIR}/${PN}-v-${PV}"
 fi
-ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
-ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12"
+ROOT_REQUIRED_USE="pythia6,pythia8,math(+),http"
+ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14"
 inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
-IUSE="pluto +fairmq onlyreco"
+IUSE="pluto +fairmq onlyreco go +examples"
 
 DEPEND="
-	>=dev-util/cmake-3.9.4
+	sci-physics/FairLogger:=
+	>=dev-util/cmake-3.11
 	sci-libs/gsl
 	dev-cpp/gtest:=
 	dev-libs/icu
 	fairmq? (
-		>=dev-libs/boost-1.64:=
-		net-libs/zeromq[static-libs]
+		>=dev-libs/boost-1.67:=
+		>=net-libs/zeromq-4.1.3:=[static-libs,fairroot]
+		sci-physics/FairMQ:=
+		dev-libs/nanomsg:=
+		dev-libs/msgpack:=[cxx]
 		)
 	!onlyreco? (
 		sci-physics/hepmc
 		dev-libs/xerces-c
-		sci-physics/geant:4[geant3]
+		sci-physics/geant:4
 		sci-physics/geant-data:4
 		pluto? (
 			sci-physics/pluto:=
 			)
-		|| (
-			$(get_root_deps sci-physics/geant-vmc:3)
-			)
+		$(get_root_deps sci-physics/geant-vmc:3)
+		$(get_root_deps sci-physics/geant-vmc:4)
 		)
 	media-libs/mesa
 	dev-libs/protobuf
 	dev-libs/flatbuffers[static-libs]"
 RDEPEND="${DEPEND}"
 ## TODO: add support for the following dependencies
-#	sci-physics/geant-vmc:4
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
-#	dev-libs/msgpack[c]
-#	dev-libs/nanomsg[static-libs]
 #	IWYU
 #	DDS
 #	CUDA
 PATCHES=(
 	"${FILESDIR}/${PN}-17.10a-libpythia.patch"
-	"${FILESDIR}/${PN}-17.10a-FairSoft.patch"
+	"${FILESDIR}/${PN}-18.0.6-FairSoft.patch"
 	"${FILESDIR}/${PN}-17.10b-FairMQ.patch"
 	"${FILESDIR}/${PN}-17.10b-GSL.patch"
+	"${FILESDIR}/${PN}-18.0.6-Tutorial4.patch"
 	)
 
 src_prepare() {
@@ -74,12 +75,17 @@ src_prepare() {
 	sed -i "s/\${SIMPATH}\/lib/\${SIMPATH}\/$(get_libdir)/g" `find ${S}/cmake -name '*.cmake'`
 }
 src_configure() {
-	export SIMPATH=${EPREFIX}/usr
+	export SIMPATH=${EPREFIX%/}/usr
+	export Boost_DIR=${EPREFIX%/}/usr
 	local mycmakeargs=(
-		-DSIMPATH="${EPREFIX}/usr"
-		-DBOOST_ROOT="${EPREFIX}/usr"
-		-DBOOST_INCLUDEDIR="${EPREFIX}/usr/include/boost"
-		-DBOOST_LIBRARYDIR="${EPREFIX}/usr/$(get_libdir)"
+		-DFAIRSOFT_EXTERN=TRUE
+		-DBoost_NO_SYSTEM_PATHS=FALSE
+		-DSIMPATH="${EPREFIX%/}/usr"
+		-DBOOST_ROOT="${EPREFIX%/}/usr"
+		-DBOOST_INCLUDEDIR="${EPREFIX%/}/usr/include/boost"
+		-DBOOST_LIBRARYDIR="${EPREFIX%/}/usr/$(get_libdir)"
+		-DDISABLE_GO="$(usex go OFF ON)"
+		-DBUILD_EXAMPLES="$(usex examples)"
 		)
 	root_src_configure
 }

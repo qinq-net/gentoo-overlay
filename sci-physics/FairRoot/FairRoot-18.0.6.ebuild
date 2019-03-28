@@ -16,7 +16,7 @@ if [[ ${PV} == *"9999" ]] ; then
 	fi
 else
 	SRC_URI="https://github.com/FairRootGroup/FairRoot/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="" #TODO: wait for dev-libs/boost-1.67 to testing
 	#S="${WORKDIR}/${PN}-v-${PV}"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math(+),http"
@@ -25,7 +25,7 @@ inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
 SLOT="0/${PV}"
-IUSE="pluto +fairmq onlyreco go examples"
+IUSE="pluto +fairmq onlyreco go +examples"
 
 DEPEND="
 	sci-physics/FairLogger:=
@@ -34,31 +34,30 @@ DEPEND="
 	dev-cpp/gtest:=
 	dev-libs/icu
 	fairmq? (
-		>=dev-libs/boost-1.64:=
-		net-libs/zeromq[static-libs]
+		>=dev-libs/boost-1.67:=
+		>=net-libs/zeromq-4.1.3:=[static-libs,fairroot]
+		sci-physics/FairMQ:=
+		dev-libs/nanomsg:=
+		dev-libs/msgpack:=[cxx]
 		)
 	!onlyreco? (
 		sci-physics/hepmc
 		dev-libs/xerces-c
-		sci-physics/geant:4[geant3]
+		sci-physics/geant:4
 		sci-physics/geant-data:4
 		pluto? (
 			sci-physics/pluto:=
 			)
-		|| (
-			$(get_root_deps sci-physics/geant-vmc:3)
-			)
+		$(get_root_deps sci-physics/geant-vmc:3)
+		$(get_root_deps sci-physics/geant-vmc:4)
 		)
 	media-libs/mesa
 	dev-libs/protobuf
 	dev-libs/flatbuffers[static-libs]"
 RDEPEND="${DEPEND}"
 ## TODO: add support for the following dependencies
-#	sci-physics/geant-vmc:4
 #	sci-physics/geant-python
 #	sci-physics/millepede:2
-#	dev-libs/msgpack[c]
-#	dev-libs/nanomsg[static-libs]
 #	IWYU
 #	DDS
 #	CUDA
@@ -76,12 +75,15 @@ src_prepare() {
 	sed -i "s/\${SIMPATH}\/lib/\${SIMPATH}\/$(get_libdir)/g" `find ${S}/cmake -name '*.cmake'`
 }
 src_configure() {
-	export SIMPATH=${EPREFIX}/usr
+	export SIMPATH=${EPREFIX%/}/usr
+	export Boost_DIR=${EPREFIX%/}/usr
 	local mycmakeargs=(
-		-DSIMPATH="${EPREFIX}/usr"
-		-DBOOST_ROOT="${EPREFIX}/usr"
-		-DBOOST_INCLUDEDIR="${EPREFIX}/usr/include/boost"
-		-DBOOST_LIBRARYDIR="${EPREFIX}/usr/$(get_libdir)"
+		-DFAIRSOFT_EXTERN=TRUE
+		-DBoost_NO_SYSTEM_PATHS=FALSE
+		-DSIMPATH="${EPREFIX%/}/usr"
+		-DBOOST_ROOT="${EPREFIX%/}/usr"
+		-DBOOST_INCLUDEDIR="${EPREFIX%/}/usr/include/boost"
+		-DBOOST_LIBRARYDIR="${EPREFIX%/}/usr/$(get_libdir)"
 		-DDISABLE_GO="$(usex go OFF ON)"
 		-DBUILD_EXAMPLES="$(usex examples)"
 		)
