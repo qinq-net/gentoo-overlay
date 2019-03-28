@@ -5,7 +5,12 @@ EAPI=7
 
 DESCRIPTION="C++ Message Queuing Library and Framework"
 HOMEPAGE="https://github.com/FairRootGroup/FairMQ"
-SRC_URI="https://github.com/FairRootGroup/FairMQ/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+if [[ ${PV} == "9999" ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/FairRootGroup/FairMQ"
+else
+	SRC_URI="https://github.com/FairRootGroup/FairMQ/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+fi
 
 inherit cmake-utils
 
@@ -30,7 +35,11 @@ DEPEND="${RDEPEND}
 	test? ( >=dev-cpp/gtest-1.7.0 )
 	dev-util/cmake"
 BDEPEND=""
-PATCHES="${FILESDIR}/${PN}-1.3.7-io_service.patch" # For Boost <= 1.67
+if ! [[ "${PV}" == "9999" ]]; then
+	PATCHES="${FILESDIR}/${PN}-1.3.8-version.patch"
+fi
+PATCHES+=" ${FILESDIR}/${PN}-1.3.7-io_service.patch" # For Boost <= 1.67
+
 
 src_configure()
 {
@@ -42,9 +51,10 @@ src_configure()
 		-DBUILD_TESTING=$(usex test)
 		-DBUILD_DDS_PLUGIN=$(usex dds)
 		-DBUILD_DOCS=$(usex doc)
+		-DCMAKE_PROJECT_VERSION=${PV}
 	)
 	if use dds; then
-		mycmakeargs+="-DDDS_ROOT=${DDS_LOCATION}"
+		mycmakeargs+=" -DDDS_ROOT=${DDS_LOCATION}"
 	fi
 	cmake-utils_src_configure
 }

@@ -1,0 +1,15 @@
+diff -Nur FairMQ-1.3.8.origin/CMakeLists.txt FairMQ-1.3.8/CMakeLists.txt
+--- FairMQ-1.3.8.origin/CMakeLists.txt	2019-01-07 18:28:15.000000000 +0800
++++ FairMQ-1.3.8/CMakeLists.txt	2019-03-28 21:22:59.382143494 +0800
+@@ -14,9 +14,9 @@
+ include(FairMQLib)
+ 
+ set_fairmq_cmake_policies()
+-get_git_version()
++set(PROJECT_GIT_VERSION 1.3.8)
+ 
+-project(FairMQ VERSION ${PROJECT_VERSION} LANGUAGES CXX)
++project(FairMQ VERSION 1.3.8 LANGUAGES CXX)
+ message(STATUS "${BWhite}${PROJECT_NAME}${CR} ${PROJECT_GIT_VERSION} from ${PROJECT_DATE}")
+ 
+ set_fairmq_defaults()

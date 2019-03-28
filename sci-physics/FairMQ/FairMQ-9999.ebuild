@@ -21,7 +21,7 @@ IUSE="+nanomsg asiofi dds pmix test doc"
 RESTRICT="mirror"
 
 RDEPEND="
-	>=dev-libs/boost-1.64:=
+	>=dev-libs/boost-1.67:=
 	dds? ( >=dev-util/DDS-2.2 )
 	pmix? ( >=sys-cluster/pmix-2.1.4 )
 	nanomsg? (
