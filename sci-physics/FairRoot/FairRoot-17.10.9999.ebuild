@@ -19,7 +19,7 @@ else
 	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${PN}-v-${PV}"
 fi
-ROOT_REQUIRED_USE="pythia6,pythia8,math,http"
+ROOT_REQUIRED_USE="pythia6,pythia8,math(+),http"
 ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14"
 inherit cmake-utils fairroot
 
