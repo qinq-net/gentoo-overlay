@@ -24,7 +24,7 @@ HOMEPAGE="https://www.gentoo.org/"
 LICENSE="GPL-2"
 SLOT="0"
 
-IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux +zfs-encryption"
+IUSE="cryptsetup dmraid gpg iscsi mdadm plymouth selinux zfs-encryption"
 DOCS=( AUTHORS )
 
 DEPEND="app-text/asciidoc
