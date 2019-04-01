@@ -15,7 +15,7 @@ EXPORT_FUNCTIONS src_configure src_compile src_test src_install
 if [[ "${ROOT_COMPAT}" != "" ]]; then
 	ROOT_TARGETS=${ROOT_COMPAT}
 else
-	ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14"
+	ROOT_TARGETS="root5_32 root5_34 root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14 root6_15 root6_16"
 fi
 
 if [[ "${ROOT_REQUIRED_USE}" != "" ]]; then

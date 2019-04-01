@@ -20,7 +20,7 @@ else
 	S="${WORKDIR}/${PN}-v-${PV}"
 fi
 ROOT_REQUIRED_USE="pythia6,pythia8,math(+),http"
-ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14"
+ROOT_COMPAT="root6_04 root6_05 root6_06 root6_08 root6_10 root6_11 root6_12 root6_13 root6_14 root6_15 root6_16"
 inherit cmake-utils fairroot
 
 LICENSE="LGPL-3"
@@ -65,6 +65,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-17.10b-FairMQ.patch"
 	"${FILESDIR}/${PN}-17.10b-GSL.patch"
 	"${FILESDIR}/${PN}-18.0.6-Tutorial4.patch"
+	"${FILESDIR}/${PN}-17.10b-gcc8.patch"
 	)
 
 src_prepare() {
