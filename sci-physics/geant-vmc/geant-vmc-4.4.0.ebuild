@@ -26,7 +26,7 @@ IUSE="doc +examples geant3 +g4root +mtroot +vgm test"
 
 RDEPEND="
 	>=sci-physics/geant-4.9.6[opengl,geant3?]
-	vgm? ( >=sci-physics/vgm-4.00 )"
+	vgm? ( $(get_root_deps '>=sci-physics/vgm-4.00') )"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )"
 
