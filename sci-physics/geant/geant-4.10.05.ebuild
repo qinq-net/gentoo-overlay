@@ -16,8 +16,9 @@ LICENSE="geant4"
 SLOT="4"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 IUSE="+data dawn doc examples gdml geant3 inventor motif opengl
-	raytracerx -qt4 qt5 static-libs vrml zlib threads +cxx11 cxx14 cxx17"
-REQUIRED_USE="?? ( qt4 qt5 ) ?? ( cxx11 cxx14 cxx17 )"
+	raytracerx -qt4 qt5 static-libs vrml zlib threads
+	+c++11 c++14 c++17"
+REQUIRED_USE="?? ( qt4 qt5 ) ?? ( c++11 c++14 c++17 )"
 
 RDEPEND="
 	dev-libs/expat
@@ -82,7 +83,6 @@ src_configure() {
 		-DGEANT4_USE_NETWORKVRML=$(usex vrml)
 		-DGEANT4_USE_SYSTEM_ZLIB=$(usex zlib)
 		-DBUILD_STATIC_LIBS=$(usex static-libs)
-		#-DGEANT4_BUILD_CXXSTD=$(usex cxx14 14 11)
 	)
 	if use inventor; then
 		mycmakeargs+=(
@@ -90,9 +90,9 @@ src_configure() {
 			-DINVENTOR_SOXT_INCLUDE_DIR="$(coin-config --includedir)"
 		)
 	fi
-	if use cxx11; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=11 ); fi
-	if use cxx14; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=14 ); fi
-	if use cxx17; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=17 ); fi
+	if use c++11; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=11 ); fi
+	if use c++14; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=14 ); fi
+	if use c++17; then mycmakeargs+=( -DGEANT4_BUILD_CXXSTD=17 ); fi
 	cmake-utils_src_configure
 }
 
