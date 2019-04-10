@@ -1,0 +1,18 @@
+# Copyright 2017-2019 QÍN Yuhào
+# Distributed under the terms of the GNU General Public License v2
+
+# This file contains descriptions of ROOT_TARGETS USE_EXPAND flags.
+
+root5_34 - Build for ROOT 5.34
+root6_04 - Build for ROOT 6.04
+root6_05 - Build for ROOT 6.05
+root6_06 - Build for ROOT 6.06
+root6_08 - Build for ROOT 6.08
+root6_10 - Build for ROOT 6.10
+root6_11 - Build for ROOT 6.11
+root6_12 - Build for ROOT 6.12
+root6_13 - Build for ROOT 6.13
+root6_14 - Build for ROOT 6.14
+root6_15 - Build for ROOT 6.15
+root6_16 - Build for ROOT 6.16
+

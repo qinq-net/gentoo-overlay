@@ -1,0 +1,5 @@
+# Copyright 2017-2019 QÍN Yuhào
+# Distributed under the terms of the GNU General Public License v2
+
+USE_EXPAND="${USE_EXPAND} ROOT_TARGET"
+ROOT_TARGET="root6_16"
