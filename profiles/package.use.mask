@@ -1,0 +1,3 @@
+# QÍN Yuhào <qinyh18@mails.tsinghua.edu.cn> (10 Apr 2019)
+# FairRoot `onlyreco` and some other use flags should not be used
+sci-physics/FairRoot onlyreco go pluto
