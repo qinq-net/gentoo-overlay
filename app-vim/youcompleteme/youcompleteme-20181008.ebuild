@@ -12,7 +12,7 @@ EGIT_REPO_URI="https://github.com/Valloric/YouCompleteMe.git"
 if [[ ${PV} == 9999* ]] ; then
 	KEYWORDS=""
 else
-	KEYWORDS="amd64 x86"
+	KEYWORDS="~amd64 ~x86"
 	EGIT_COMMIT_DATE="${PV:0:4}-${PV:4:2}-${PV:6:2}"
 fi
 
@@ -25,7 +25,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 COMMON_DEPEND="
 	${PYTHON_DEPS}
-	clang? ( >=sys-devel/clang-3.3:= )
+	clang? ( >=sys-devel/clang-3.9:= )
 	dev-libs/boost[python,threads,${PYTHON_USEDEP}]
 	|| (
 		app-editors/vim[python,${PYTHON_USEDEP}]
@@ -106,7 +106,7 @@ src_install() {
 	rm -r third_party/ycmd/{*.md,*.sh} || die
 	find python -name *test* -exec rm -rf {} + || die
 	egit_clean
-	rm third_party/ycmd/libclang.so* || die
+	#rm third_party/ycmd/libclang.so* || die
 
 	vim-plugin_src_install
 
