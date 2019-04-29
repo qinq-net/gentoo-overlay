@@ -65,7 +65,7 @@ src_prepare() {
 src_configure() {
 	local _USE_QT=no
 	if use qt4; then _USE_QT=yes
-	elif use qt5; then _USE_QT=no
+	elif use qt5; then _USE_QT=yes
 	fi
 	local mycmakeargs=(
 		-DGEANT4_USE_SYSTEM_CLHEP=ON
